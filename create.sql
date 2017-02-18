@@ -28,8 +28,7 @@ CREATE TABLE Branch(
 CREATE TABLE Employee(
     eid INTEGER PRIMARY KEY,
     startDate DATE,
-    salary INTEGER NOT NULL, 
-CHECK (salary > 0),
+    salary INTEGER NOT NULL, CHECK (salary > 0),
     bid INTEGER,
     workingDays CHAR(7), /*Given in format MTWTSS*/
     startTime TIME,
@@ -42,7 +41,7 @@ CREATE TABLE Product (
     PrId INTEGER PRIMARY KEY,
     Brand VARCHAR(20) NOT NULL,
     Name VARCHAR(20),
-    Type ProducType NOT NULL,
+    Type ProductType NOT NULL,
     Year INTEGER,
     Available BOOLEAN NOT NULL,
     Bid INTEGER,
