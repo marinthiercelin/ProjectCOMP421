@@ -2,7 +2,7 @@
 
 CREATE TYPE ProductType AS ENUM('Ski', 'Snowboard', 'Poles', 'SkiBoots', 'Snowboots', 'Helmets', 'Skiwear', 'Accessories');
 
-CREATE TYPE PymtMethod AS ENUM ( 'cash', 'credit card', 'debit card');
+CREATE TYPE PymtMethod AS ENUM ( 'cash', 'credit', 'debit');
 
 CREATE TABLE Client(
     cid INTEGER PRIMARY KEY,
@@ -13,6 +13,7 @@ CREATE TABLE Client(
     country VARCHAR(20),
     creationDate DATE );
 
+
 CREATE TABLE Branch(
     Bid INTEGER PRIMARY KEY,
     StreetNumber INTEGER,
@@ -22,16 +23,18 @@ CREATE TABLE Branch(
     OpeningTime TIME,
     ClosingTime TIME
 );
-    
+
+
 CREATE TABLE Employee(
     eid INTEGER PRIMARY KEY,
     startDate DATE,
-    salary INTEGER NOT NULL CHECK (salary > 0),
+    salary INTEGER NOT NULL, 
+CHECK (salary > 0),
     bid INTEGER,
-    workingDays CHAR(7), /* Given in format MTWTSS */
+    workingDays CHAR(7), /*Given in format MTWTSS*/
     startTime TIME,
     endTime TIME,
-    FOREIGN KEY(Bid) REFERENCES Branch);
+FOREIGN KEY(Bid) REFERENCES Branch);
     
 
 
@@ -67,16 +70,16 @@ CREATE TABLE Salesman(
 );
 
 CREATE TABLE Manager (
-Eid INTEGER PRIMARY KEY,
-Bid INTEGER,
-FOREIGN KEY( Bid ) REFERENCES Branch,
-FOREIGN KEY( Eid ) REFERENCES Employee
-);
+	Eid INTEGER PRIMARY KEY,
+	Bid INTEGER,
+	FOREIGN KEY( Bid ) REFERENCES Branch,
+	FOREIGN KEY( Eid ) REFERENCES Employee
+);	
 
 CREATE TABLE Fee (
     Fid INTEGER PRIMARY KEY,
     Price INTEGER,
-    Duration VARCHAR(20) \\Ex : “week”, “2 hours”
+    Duration VARCHAR(20) /*Ex : “week”, “2 hours”*/
 );
 
 CREATE TABLE Payment(
