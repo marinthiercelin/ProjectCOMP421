@@ -6,10 +6,10 @@ CREATE TYPE PymtMethod AS ENUM ( 'cash', 'credit', 'debit');
 
 CREATE TABLE Client(
     cid INTEGER PRIMARY KEY,
-    Name VARCHAR(20)  NOT NULL,
+    cName VARCHAR(20)  NOT NULL,
     streetNum INTEGER,
-    street VARCHAR(20),
-    city VARCHAR(20),
+    street VARCHAR(30),
+    city VARCHAR(30),
     country VARCHAR(20),
     creationDate DATE );
 
@@ -17,8 +17,8 @@ CREATE TABLE Client(
 CREATE TABLE Branch(
     Bid INTEGER PRIMARY KEY,
     StreetNumber INTEGER,
-    Street VARCHAR(20),
-    City VARCHAR(20),
+    Street VARCHAR(30),
+    City VARCHAR(30),
     Country VARCHAR(20),
     OpeningTime TIME,
     ClosingTime TIME
@@ -53,14 +53,14 @@ CREATE TABLE Product (
 
 CREATE TABLE ForRent (
     PrId INTEGER PRIMARY KEY,
-    Condition VARCHAR(20),
+    prCondition VARCHAR(20),
     FOREIGN KEY(PrId) REFERENCES Product 
 );
 
 
 CREATE TABLE ForSale (
     prID INTEGER PRIMARY KEY,
-    Condition VARCHAR(20),
+    prCondition VARCHAR(20),
     FOREIGN KEY(prID) REFERENCES Product);
     
 
