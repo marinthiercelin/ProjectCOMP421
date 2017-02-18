@@ -131,7 +131,7 @@ CREATE TABLE RATES(
 CREATE TABLE PAYSFOR(
     CONSTRAINT PaysForId    PRIMARY KEY(PrId,Fid),
 
-    PrId        INTEGER     NOT NULL REFERENCES Product(Pid),
+    PrId        INTEGER     NOT NULL REFERENCES Product(PrId),
     Fid         INTEGER     NOT NULL REFERENCES Fee(Fid)
 
 );
