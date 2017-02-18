@@ -84,7 +84,7 @@ CREATE TABLE Fee (
 CREATE TABLE Payment(
     PyId INTEGER PRIMARY KEY,
     Discnt INTEGER CHECK (Discnt >= 0 AND Discnt <= 100),
-    Date DATE,
+    pyDate DATE,
     Mthod PymtMethod , 
     Amount REAL CHECK ( Amount >= 0 ),
     Eid INTEGER,
