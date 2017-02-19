@@ -11,7 +11,8 @@ CREATE TABLE Client(
     street VARCHAR(30),
     city VARCHAR(30),
     country VARCHAR(20),
-    creationDate DATE );
+    creationDate DATE DEFAULT CURRENT_DATE
+);
 
 
 CREATE TABLE Branch(
@@ -27,13 +28,14 @@ CREATE TABLE Branch(
 
 CREATE TABLE Employee(
     eid INTEGER PRIMARY KEY,
-    startDate DATE,
+    startDate DATE DEFAULT CURRENT_DATE,
     salary INTEGER NOT NULL, CHECK (salary > 0),
     bid INTEGER,
-    workingDays CHAR(7), /*Given in format MTWTSS*/
+    workingDays CHAR(7), /*Given in format MTWTFSS*/
     startTime TIME,
     endTime TIME,
-FOREIGN KEY(Bid) REFERENCES Branch);
+    FOREIGN KEY(Bid) REFERENCES Branch
+);
     
 
 
@@ -52,15 +54,16 @@ CREATE TABLE Product (
 
 CREATE TABLE ForRent (
     PrId INTEGER PRIMARY KEY,
-    prCondition VARCHAR(20),
+    prCondition VARCHAR(20) NOT NULL,
     FOREIGN KEY(PrId) REFERENCES Product 
 );
 
 
 CREATE TABLE ForSale (
     prID INTEGER PRIMARY KEY,
-    prCondition VARCHAR(20),
-    FOREIGN KEY(prID) REFERENCES Product);
+    prCondition VARCHAR(20), /* TODO: Do we really need condition for ForSale products? */
+    FOREIGN KEY(prID) REFERENCES Product
+);
     
 
 CREATE TABLE Salesman(
@@ -70,7 +73,7 @@ CREATE TABLE Salesman(
 
 CREATE TABLE Manager (
 	Eid INTEGER PRIMARY KEY,
-	Bid INTEGER,
+	Bid INTEGER NOT NULL,
 	FOREIGN KEY( Bid ) REFERENCES Branch,
 	FOREIGN KEY( Eid ) REFERENCES Employee
 );	
@@ -84,28 +87,26 @@ CREATE TABLE Fee (
 CREATE TABLE Payment(
     PyId INTEGER PRIMARY KEY,
     Discnt INTEGER CHECK (Discnt >= 0 AND Discnt <= 100),
-    pyDate DATE,
-    Mthod PymtMethod , 
-    Amount REAL CHECK ( Amount >= 0 ),
-    Eid INTEGER,
-    Cid INTEGER,
+    pyDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(2),
+    Method PymtMethod NOT NULL, 
+    Amount REAL CHECK ( Amount >= 0 ) NOT NULL,
+    Eid INTEGER NOT NULL,
+    Cid INTEGER NOT NULL,
     FOREIGN KEY(Eid) REFERENCES Employee,
-FOREIGN KEY(Cid) REFERENCES Client
+    FOREIGN KEY(Cid) REFERENCES Client
 );
 
 /* Relationships */
 
 CREATE TABLE RENTS(
-CONSTRAINT RentId       PRIMARY KEY(Cid,PyId,PrId), 
-/* Unsure if CONSTRAINT is necessary */
-
-        Cid INTEGER     NOT NULL REFERENCES Client(Cid),
-        PyId    INTEGER NOT NULL REFERENCES Payment(PyId),
+    CONSTRAINT RentId   PRIMARY KEY(Cid,PyId,PrId), 
+    Cid     INTEGER     NOT NULL REFERENCES Client(Cid),
+    PyId    INTEGER     NOT NULL REFERENCES Payment(PyId),
     PrId    INTEGER     NOT NULL REFERENCES Product(PrId),
 
     InitCndit   CHAR(50)    NOT NULL,
     StartDate   TIMESTAMP   NOT NULL    DEFAULT   CURRENT_TIMESTAMP(2),
-    EndDate TIMESTAMP   NOT NULL
+    EndDate     TIMESTAMP   NOT NULL
 
 );
 
