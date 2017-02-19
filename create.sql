@@ -106,7 +106,7 @@ CREATE TABLE RENTS(
     PyId    INTEGER     NOT NULL REFERENCES Payment(PyId),
     PrId    INTEGER     NOT NULL REFERENCES Product(PrId),
 
-    InitCndit   CHAR(50)    NOT NULL,
+    InitCndit   VARCHAR(50)    NOT NULL,
     StartDate   TIMESTAMP   NOT NULL    DEFAULT   CURRENT_TIMESTAMP(2),
     EndDate     TIMESTAMP   NOT NULL
 
