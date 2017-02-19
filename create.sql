@@ -4,6 +4,8 @@ CREATE TYPE ProductType AS ENUM('Ski', 'Snowboard', 'Poles', 'SkiBoots', 'Snowbo
 
 CREATE TYPE PymtMethod AS ENUM ( 'cash', 'credit', 'debit');
 
+CREATE TYPE RentingDuration AS ENUM ('1_Hour', '1_DAY', '2_DAY', '1_WEEK', '1_YEAR');
+
 CREATE TABLE Client(
     cid INTEGER PRIMARY KEY,
     cName VARCHAR(20)  NOT NULL,
@@ -42,9 +44,9 @@ CREATE TABLE Employee(
 CREATE TABLE Product (
     PrId INTEGER PRIMARY KEY,
     Brand VARCHAR(20) NOT NULL,
-    Name VARCHAR(20),
-    Type ProductType NOT NULL,
-    Year INTEGER,
+    pName VARCHAR(20),
+    pType ProductType NOT NULL,
+    pYear INTEGER,
     Available BOOLEAN NOT NULL,
     Bid INTEGER,
     FOREIGN KEY(Bid) REFERENCES Branch
@@ -81,7 +83,7 @@ CREATE TABLE Manager (
 CREATE TABLE Fee (
     Fid INTEGER PRIMARY KEY,
     Price INTEGER,
-    Duration VARCHAR(20) /*Ex : “week”, “2 hours”*/
+    Duration RentingDuration /*Ex : “week”, “2 hours”*/
 );
 
 CREATE TABLE Payment(
