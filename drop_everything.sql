@@ -15,6 +15,7 @@ drop table rates CASCADE;
 
 drop type producttype;
 drop type pymtmethod;
+drop type rentingduration;
 
 
 
