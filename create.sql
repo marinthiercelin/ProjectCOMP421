@@ -115,7 +115,7 @@ CREATE TABLE RENTS(
 CREATE TABLE BUYS(
     CONSTRAINT  BuyId       PRIMARY KEY(PrId, PyId),
 
-    PrId        INTEGER     NOT NULL REFERENCES Product(PrId),
+    PrId        INTEGER     NOT NULL REFERENCES ForSale(PrId), /*Modified to ForSale to be more specific*/
     PyId        INTEGER     NOT NULL REFERENCES Payment(PyId)
 
 );
@@ -133,7 +133,7 @@ CREATE TABLE RATES(
 CREATE TABLE PAYSFOR(
     CONSTRAINT PaysForId    PRIMARY KEY(PrId,Fid),
 
-    PrId        INTEGER     NOT NULL REFERENCES Product(PrId),
+    PrId        INTEGER     NOT NULL REFERENCES ForRent(PrId), /*Modified to ForRent to be more specific*/
     Fid         INTEGER     NOT NULL REFERENCES Fee(Fid)
 
 );
