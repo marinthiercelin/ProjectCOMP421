@@ -4,7 +4,7 @@ CREATE TYPE ProductType AS ENUM('Ski', 'Snowboard', 'Poles', 'SkiBoots', 'Snowbo
 
 CREATE TYPE PymtMethod AS ENUM ( 'cash', 'credit', 'debit');
 
-CREATE TYPE RentingDuration AS ENUM ('1_Hour', '1_DAY', '2_DAY', '1_WEEK', '1_YEAR');
+CREATE TYPE RentingDuration AS ENUM ('1_Hour', '1_DAY', '2_DAYS', '1_WEEK', '1_YEAR');
 
 CREATE TABLE Client(
     cid INTEGER PRIMARY KEY,
@@ -64,6 +64,7 @@ CREATE TABLE ForRent (
 CREATE TABLE ForSale (
     prID INTEGER PRIMARY KEY,
     prCondition VARCHAR(20), /* TODO: Do we really need condition for ForSale products? */
+    Price INTEGER NOT NULL CHECK(Price >= 0)
     FOREIGN KEY(prID) REFERENCES Product
 );
     
