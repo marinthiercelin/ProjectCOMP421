@@ -10,7 +10,7 @@ CREATE TYPE RentingDuration AS ENUM ('1_HOUR', '1_DAY', '2_DAYS', '1_WEEK', '1_M
 
 CREATE TABLE Client(
     cid INTEGER PRIMARY KEY,
-    cName VARCHAR(20)  NOT NULL,
+    cName VARCHAR(30)  NOT NULL,
     streetNum INTEGER,
     street VARCHAR(30),
     city VARCHAR(30),
@@ -32,6 +32,7 @@ CREATE TABLE Branch(
 
 CREATE TABLE Employee( /*Add Names to employees*/
     eid INTEGER PRIMARY KEY,
+    eName VARCHAR(30) NOT NULL,
     startDate DATE DEFAULT CURRENT_DATE,
     salary INTEGER NOT NULL, CHECK (salary > 0),
     bid INTEGER,
