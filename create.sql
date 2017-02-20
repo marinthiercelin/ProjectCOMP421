@@ -66,7 +66,7 @@ CREATE TABLE ForRent (
 CREATE TABLE ForSale (
     prID INTEGER PRIMARY KEY,
     prCondition VARCHAR(20), /* TODO: Do we really need condition for ForSale products? */
-    Price INTEGER NOT NULL CHECK(Price >= 0)
+    Price INTEGER NOT NULL CHECK(Price >= 0),
     FOREIGN KEY(prID) REFERENCES Product
 );
     
