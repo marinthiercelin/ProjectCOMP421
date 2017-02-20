@@ -20,7 +20,7 @@ CREATE TABLE Client(
 
 
 CREATE TABLE Branch(
-    Bid INTEGER PRIMARY KEY ,
+    Bid INTEGER PRIMARY KEY,
     StreetNumber INTEGER,
     Street VARCHAR(30),
     City VARCHAR(30),

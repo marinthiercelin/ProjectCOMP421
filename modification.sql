@@ -27,12 +27,12 @@ and make them pay for it to a salesman
 CREATE VIEW temp1 AS
 SELECT s.PrId PrId, s.Price Price, p.pYear pYear
 FROM ForSale s, Product p
-WHERE p.Bid = 1 AND s.PrId = p.PrId AND p.pType = 'Ski' AND p.Available = true 
+WHERE s.PrId = p.PrId AND p.pType = "Ski" AND p.Available = true ;
 ORDER BY Price ASC, pYear DESC
 LIMIT 1;
 
 WITH temp1
-INSERT INTO Payment VALUES(12, 0, 'cash', temp1.Price, 2, 4);/* PyId dscnt, mthd, amnt, eid, cid*/
+INSERT INTO Payment VALUES(12, 0, 'cash', temp1.Price, 2, 4) /* PyId dscnt, mthd, amnt, eid, cid*/
 
 
 
@@ -41,37 +41,19 @@ INSERT INTO Payment VALUES(12, 0, 'cash', temp1.Price, 2, 4);/* PyId dscnt, mthd
 /* 6 
 merge 2 branches (bid1, bid2) in bi1 delete the manager of branch bid2 and the branch bid2  
 */
-
-SELECT *
-FROM Employee
-WHERE Bid = 2;
-
-SELECT *
-FROM Product
-WHERE Bid = 2;
-
 UPDATE Product
-SET Bid = 1 
-WHERE  Bid = 2;
+SET Bid = bid1; 
+WHERE  Bid = bid2;
 
 UPDATE Employee
-SET Bid = 1
-WHERE Bid = 2;
+SET Bid = bid1;
+WHERE Bid = bid2;
 
-SELECT *
-FROM Manager
-WHERE Bid = 2;
+DELETE Employee e, Manager man
+WHERE e.eid = man.eid and man.Bid = bid2;
 
-DELETE FROM Employee e
-USING Manager man
-WHERE e.eid = man.eid and man.Bid = 2;
-
-SELECT *
-FROM Branch
-WHERE Bid = 2;
-
-DELETE FROM Branch 
-WHERE Bid = 2;
+DELETE Branch 
+WHERE Bid = bid2;
 
 
 
