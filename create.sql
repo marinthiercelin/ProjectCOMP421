@@ -5,7 +5,7 @@ CREATE TYPE ProductType AS ENUM('Ski', 'Snowboard', 'Poles', 'SkiBoots', 'Snowbo
 CREATE TYPE PymtMethod AS ENUM ( 'cash', 'credit', 'debit');
 
 
-CREATE TYPE RentingDuration AS ENUM ('1_Hour', '1_DAY', '2_DAYS', '1_WEEK', '1_MONTH','1_YEAR');
+CREATE TYPE RentingDuration AS ENUM ('1_HOUR', '1_DAY', '2_DAYS', '1_WEEK', '1_MONTH','1_YEAR');
 
 
 CREATE TABLE Client(
