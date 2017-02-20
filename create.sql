@@ -30,7 +30,7 @@ CREATE TABLE Branch(
 );
 
 
-CREATE TABLE Employee(
+CREATE TABLE Employee( /*Add Names to employees*/
     eid INTEGER PRIMARY KEY,
     startDate DATE DEFAULT CURRENT_DATE,
     salary INTEGER NOT NULL, CHECK (salary > 0),
@@ -38,7 +38,7 @@ CREATE TABLE Employee(
     workingDays CHAR(7), /*Given in format MTWTFSS*/
     startTime TIME,
     endTime TIME,
-    FOREIGN KEY(Bid) REFERENCES Branch
+    FOREIGN KEY(Bid) REFERENCES Branch 
 );
     
 
@@ -106,7 +106,7 @@ CREATE TABLE RENTS(
     CONSTRAINT RentId   PRIMARY KEY(Cid,PyId,PrId), 
     Cid     INTEGER     NOT NULL REFERENCES Client(Cid),
     PyId    INTEGER     NOT NULL REFERENCES Payment(PyId),
-    PrId    INTEGER     NOT NULL REFERENCES Product(PrId),
+    PrId    INTEGER     NOT NULL REFERENCES ForRent(PrId),
 
     InitCndit   VARCHAR(50)    NOT NULL,
     StartDate   TIMESTAMP   NOT NULL    DEFAULT   CURRENT_TIMESTAMP(2),
