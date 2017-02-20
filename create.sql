@@ -1,4 +1,4 @@
-/* Entities */
+﻿/* Entities */
 
 CREATE TYPE ProductType AS ENUM('Ski', 'Snowboard', 'Poles', 'SkiBoots', 'Snowboots', 'Helmets', 'Skiwear', 'Accessories');
 
@@ -38,7 +38,7 @@ CREATE TABLE Employee( /*Add Names to employees*/
     workingDays CHAR(7), /*Given in format MTWTFSS*/
     startTime TIME,
     endTime TIME,
-    FOREIGN KEY(Bid) REFERENCES Branch 
+    FOREIGN KEY(Bid) REFERENCES Branch ON DELETE CASCADE ON UPDATE CASCADE
 );
     
 
@@ -51,7 +51,7 @@ CREATE TABLE Product (
     pYear INTEGER,
     Available BOOLEAN NOT NULL,
     Bid INTEGER,
-    FOREIGN KEY(Bid) REFERENCES Branch
+    FOREIGN KEY(Bid) REFERENCES Branch ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 
@@ -59,27 +59,27 @@ CREATE TABLE Product (
 CREATE TABLE ForRent (
     PrId INTEGER PRIMARY KEY,
     prCondition VARCHAR(20) NOT NULL,
-    FOREIGN KEY(PrId) REFERENCES Product 
+    FOREIGN KEY(PrId) REFERENCES Product ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 
 CREATE TABLE ForSale (
     prID INTEGER PRIMARY KEY,
     Price INTEGER NOT NULL CHECK(Price >= 0),
-    FOREIGN KEY(prID) REFERENCES Product
+    FOREIGN KEY(prID) REFERENCES Product ON DELETE CASCADE ON UPDATE CASCADE
 );
     
 
 CREATE TABLE Salesman(
     Eid INTEGER PRIMARY KEY,
-    FOREIGN KEY(Eid) REFERENCES Employee
+    FOREIGN KEY(Eid) REFERENCES Employee ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE Manager (
 	Eid INTEGER PRIMARY KEY,
 	Bid INTEGER NOT NULL,
-	FOREIGN KEY( Bid ) REFERENCES Branch,
-	FOREIGN KEY( Eid ) REFERENCES Employee
+	FOREIGN KEY( Bid ) REFERENCES Branch ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY( Eid ) REFERENCES Employee ON DELETE CASCADE ON UPDATE CASCADE
 );	
 
 CREATE TABLE Fee (
@@ -96,8 +96,8 @@ CREATE TABLE Payment(
     Amount REAL CHECK ( Amount >= 0 ) NOT NULL,
     Eid INTEGER NOT NULL,
     Cid INTEGER NOT NULL,
-    FOREIGN KEY(Eid) REFERENCES Employee,
-    FOREIGN KEY(Cid) REFERENCES Client
+    FOREIGN KEY(Eid) REFERENCES Employee ,
+    FOREIGN KEY(Cid) REFERENCES Client 
 );
 
 /* Relationships */
@@ -106,7 +106,7 @@ CREATE TABLE RENTS(
     CONSTRAINT RentId   PRIMARY KEY(Cid,PyId,PrId), 
     Cid     INTEGER     NOT NULL REFERENCES Client(Cid),
     PyId    INTEGER     NOT NULL REFERENCES Payment(PyId),
-    PrId    INTEGER     NOT NULL REFERENCES ForRent(PrId),
+    PrId    INTEGER     NOT NULL REFERENCES ForRent(PrId) ON DELETE CASCADE ON UPDATE CASCADE,
 
     InitCndit   VARCHAR(50)    NOT NULL,
     StartDate   TIMESTAMP   NOT NULL    DEFAULT   CURRENT_TIMESTAMP(2),
@@ -117,8 +117,8 @@ CREATE TABLE RENTS(
 CREATE TABLE BUYS(
     CONSTRAINT  BuyId       PRIMARY KEY(PrId, PyId),
 
-    PrId        INTEGER     NOT NULL REFERENCES ForSale(PrId), /*Modified to ForSale to be more specific*/
-    PyId        INTEGER     NOT NULL REFERENCES Payment(PyId)
+    PrId        INTEGER     NOT NULL REFERENCES ForSale(PrId) ON DELETE CASCADE ON UPDATE CASCADE, /*Modified to ForSale to be more specific*/
+    PyId        INTEGER     NOT NULL REFERENCES Payment(PyId) 
 
 );
 
@@ -135,7 +135,7 @@ CREATE TABLE RATES(
 CREATE TABLE PAYSFOR(
     CONSTRAINT PaysForId    PRIMARY KEY(PrId,Fid),
 
-    PrId        INTEGER     NOT NULL REFERENCES ForRent(PrId), /*Modified to ForRent to be more specific*/
+    PrId        INTEGER     NOT NULL REFERENCES ForRent(PrId) ON DELETE CASCADE ON UPDATE CASCADE, /*Modified to ForRent to be more specific*/
     Fid         INTEGER     NOT NULL REFERENCES Fee(Fid)
 
 );
