@@ -1,4 +1,4 @@
-/* 1 delete all clients that 
+﻿/* 1 delete all clients that 
 were created more than 3years ago 
 and that haven't made any payement in the last year, (check that they have no currently going renting) delete all payments, and ratings associated with them*/
 
@@ -11,9 +11,13 @@ and that haven't made any payement in the last year, (check that they have no cu
 	check that no fees have 0 products, delete the ones who do
 */
 
-DELETE Product AS p
-USING ForRent f
-WHERE p.PrId = f.PrId AND p.pType = 'Snowboots' AND p.Available = true AND p.pYear - 2017 > 3 
+SELECT *
+FROM Product p, ForRent f
+WHERE p.PrId = f.PrId AND p.pType = 'Snowboots' AND p.Available = true AND 2017-p.pYear > 3;
+
+DELETE FROM Product p
+USING Forrent f
+WHERE p.PrId = f.PrId AND p.pType = 'Snowboots' AND p.Available = true AND 2017-p.pYear > 3; 
 
 /* 5 
 look for the cheapest skis (and possibly most recent) available in a certain branch and make a client buy them starting now
