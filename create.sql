@@ -4,7 +4,9 @@ CREATE TYPE ProductType AS ENUM('Ski', 'Snowboard', 'Poles', 'SkiBoots', 'Snowbo
 
 CREATE TYPE PymtMethod AS ENUM ( 'cash', 'credit', 'debit');
 
-CREATE TYPE RentingDuration AS ENUM ('1_Hour', '1_DAY', '2_DAYS', '1_WEEK', '1_YEAR');
+
+CREATE TYPE RentingDuration AS ENUM ('1_Hour', '1_DAY', '2_DAYS', '1_WEEK', '1_MONTH','1_YEAR');
+
 
 CREATE TABLE Client(
     cid INTEGER PRIMARY KEY,
@@ -107,7 +109,7 @@ CREATE TABLE RENTS(
     PyId    INTEGER     NOT NULL REFERENCES Payment(PyId),
     PrId    INTEGER     NOT NULL REFERENCES Product(PrId),
 
-    InitCndit   CHAR(50)    NOT NULL,
+    InitCndit   VARCHAR(50)    NOT NULL,
     StartDate   TIMESTAMP   NOT NULL    DEFAULT   CURRENT_TIMESTAMP(2),
     EndDate     TIMESTAMP   NOT NULL
 
@@ -116,7 +118,7 @@ CREATE TABLE RENTS(
 CREATE TABLE BUYS(
     CONSTRAINT  BuyId       PRIMARY KEY(PrId, PyId),
 
-    PrId        INTEGER     NOT NULL REFERENCES Product(PrId),
+    PrId        INTEGER     NOT NULL REFERENCES ForSale(PrId), /*Modified to ForSale to be more specific*/
     PyId        INTEGER     NOT NULL REFERENCES Payment(PyId)
 
 );
@@ -134,7 +136,7 @@ CREATE TABLE RATES(
 CREATE TABLE PAYSFOR(
     CONSTRAINT PaysForId    PRIMARY KEY(PrId,Fid),
 
-    PrId        INTEGER     NOT NULL REFERENCES Product(PrId),
+    PrId        INTEGER     NOT NULL REFERENCES ForRent(PrId), /*Modified to ForRent to be more specific*/
     Fid         INTEGER     NOT NULL REFERENCES Fee(Fid)
 
 );
