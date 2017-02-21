@@ -46,7 +46,7 @@ CREATE VIEW ProductYear(pType, year, num)
 AS SELECT p.pType, p.pYear, COUNT(*) AS num
 FROM ForRent f, Product p
 WHERE f.PrId = p.PrId
-GROUP BY p.pType, p.year;
+GROUP BY p.pType, p.pYear;
 
 CREATE VIEW ProductYearMax(pType, num)
 AS SELECT p.pType, MAX(p.num)
