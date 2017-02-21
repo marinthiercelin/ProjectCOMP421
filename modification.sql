@@ -1,6 +1,25 @@
 ﻿/* 1 delete all clients that 
-were created more than 3years ago 
-and that haven't made any payement in the last year, (check that they have no currently going renting) delete all payments, and ratings associated with them*/
+were created more than 7years ago 
+and that haven't made any payement in the last 2 years , (check that they have no currently going renting) delete all payments, and ratings associated with them*/
+
+SELECT *
+FROM client 
+WHERE CURRENT_DATE - 6*365 >  creationDate  AND cid NOT IN (
+
+SELECT c.cid
+FROM client c, payment p
+WHERE c.cid = p.cid AND CURRENT_DATE - 2*365  < p.pyDate
+
+) AND cid NOT IN (
+
+SELECT c.cid
+FROM client c , rents r 
+WHERE c.cid = r.cid AND r.endDate >= CURRENT_DATE
+);
+
+
+
+
 
 /* 2 delete all salesman that have a rating below 1, deletes all their ratings and put all their payments to the best seller */
 

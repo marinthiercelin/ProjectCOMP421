@@ -1,4 +1,5 @@
 ﻿/* Entities */
+/* TODO : Check all the foreign key for their ON DELETE and ON UPDATE statements tell me if you agree*/ 
 
 CREATE TYPE ProductType AS ENUM('Ski', 'Snowboard', 'Poles', 'SkiBoots', 'Snowboots', 'Helmets', 'Skiwear', 'Accessories');
 
@@ -97,16 +98,16 @@ CREATE TABLE Payment(
     Amount REAL CHECK ( Amount >= 0 ) NOT NULL,
     Eid INTEGER NOT NULL,
     Cid INTEGER NOT NULL,
-    FOREIGN KEY(Eid) REFERENCES Employee ,
-    FOREIGN KEY(Cid) REFERENCES Client 
+    FOREIGN KEY(Eid) REFERENCES Employee ON DELETE SET NULL ON UPDATE CASCADE ,
+    FOREIGN KEY(Cid) REFERENCES Client ON DELETE SET NULL ON UPDATE CASCADE
 );
 
 /* Relationships */
 
 CREATE TABLE RENTS(
     CONSTRAINT RentId   PRIMARY KEY(Cid,PyId,PrId), 
-    Cid     INTEGER     NOT NULL REFERENCES Client(Cid),
-    PyId    INTEGER     NOT NULL REFERENCES Payment(PyId),
+    Cid     INTEGER     NOT NULL REFERENCES Client(Cid) ON DELETE CASCADE ON UPDATE CASCADE,
+    PyId    INTEGER     NOT NULL REFERENCES Payment(PyId) ON DELETE CASCADE ON UPDATE CASCADE,
     PrId    INTEGER     NOT NULL REFERENCES ForRent(PrId) ON DELETE CASCADE ON UPDATE CASCADE,
 
     InitCndit   VARCHAR(50)    NOT NULL,
@@ -119,25 +120,23 @@ CREATE TABLE BUYS(
     CONSTRAINT  BuyId       PRIMARY KEY(PrId, PyId),
 
     PrId        INTEGER     NOT NULL REFERENCES ForSale(PrId) ON DELETE CASCADE ON UPDATE CASCADE, /*Modified to ForSale to be more specific*/
-    PyId        INTEGER     NOT NULL REFERENCES Payment(PyId) 
+    PyId        INTEGER     NOT NULL REFERENCES Payment(PyId) ON DELETE SET NULL ON UPDATE CASCADE /* TODO : if a payment is deleted, the product should be still considered as sold right ?*/
 
 );
 
 CREATE TABLE RATES(
     CONSTRAINT  RateId      PRIMARY KEY(Cid,Eid),
 
-    Cid         INTEGER     NOT NULL REFERENCES Client(Cid),
-    Eid         INTEGER     NOT NULL REFERENCES Employee(Eid),
-
+    Cid         INTEGER     REFERENCES Client(Cid) ON DELETE SET NULL ON UPDATE CASCADE, /* TODO : we want to keep the ratings even if the client gets deleted, right ?*/
+    Eid         INTEGER     NOT NULL REFERENCES Employee(Eid) ON DELETE CASCADE ON UPDATE CASCADE,
     Rating      INTEGER     NULL     CHECK(Rating >= 1 and Rating <= 5)
 
 );
 
 CREATE TABLE PAYSFOR(
     CONSTRAINT PaysForId    PRIMARY KEY(PrId,Fid),
-
     PrId        INTEGER     NOT NULL REFERENCES ForRent(PrId) ON DELETE CASCADE ON UPDATE CASCADE, /*Modified to ForRent to be more specific*/
-    Fid         INTEGER     NOT NULL REFERENCES Fee(Fid)
+    Fid         INTEGER     NOT NULL REFERENCES Fee(Fid) ON DELETE CASCADE ON UPDATE CASCADE 
 
 );
 
