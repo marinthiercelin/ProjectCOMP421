@@ -39,7 +39,7 @@ SELECT s.eid, AVG(rating)
 FROM Salesman s, Rates r
 WHERE s.eid = r.eid
 GROUP BY (s.eid)
-HAVING AVG(rating) >= 3;
+HAVING AVG(rating) >= 4.5;
 
 UPDATE Employee
 SET salary = 1.1*salary
@@ -49,7 +49,7 @@ WHERE eid IN (
 	FROM Salesman s, Rates r
 	WHERE s.eid = r.eid
 	GROUP BY (s.eid)
-	HAVING AVG(rating) >= 0
+	HAVING AVG(rating) >= 4.5
 
 );
 
@@ -65,7 +65,10 @@ WHERE p.PrId = f.PrId AND p.pType = 'Snowboots' AND p.Available = true AND 2017-
 
 DELETE FROM Product p
 USING Forrent f
-WHERE p.PrId = f.PrId AND p.pType = 'Snowboots' AND p.Available = true AND EXTRACT(YEAR FROM CURRENT_DATE) - p.pYear > 3; 
+WHERE p.PrId = f.PrId 
+	AND p.pType = 'Snowboots' 
+	AND p.Available = true 
+	AND EXTRACT(YEAR FROM CURRENT_DATE) - p.pYear > 3; 
 
 
 
