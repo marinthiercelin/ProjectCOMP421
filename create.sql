@@ -31,13 +31,13 @@ CREATE TABLE Branch(
 );
 
 
-CREATE TABLE Employee( /*Add Names to employees*/
+CREATE TABLE Employee( 
     eid INTEGER PRIMARY KEY,
     eName VARCHAR(30) NOT NULL,
     startDate DATE DEFAULT CURRENT_DATE,
     salary INTEGER NOT NULL, CHECK (salary > 0),
     bid INTEGER,
-    workingDays CHAR(7), /*Given in format MTWTFSS*/
+    workingDays CHAR(7),
     startTime TIME,
     endTime TIME,
     FOREIGN KEY(Bid) REFERENCES Branch ON DELETE CASCADE ON UPDATE CASCADE
@@ -87,7 +87,7 @@ CREATE TABLE Manager (
 CREATE TABLE Fee (
     Fid INTEGER PRIMARY KEY,
     Price INTEGER,
-    Duration RentingDuration /*Ex : “week”, “2 hours”*/
+    Duration RentingDuration 
 );
 
 CREATE TABLE Payment(
@@ -96,8 +96,8 @@ CREATE TABLE Payment(
     pyDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(2),
     Method PymtMethod NOT NULL, 
     Amount REAL CHECK ( Amount >= 0 ) NOT NULL,
-    Eid INTEGER /*NOT NULL*/, /*Can be set to null, wants to keep the payment associated with them right ?*/
-    Cid INTEGER /*NOT NULL*/,
+    Eid INTEGER,
+    Cid INTEGER ,
     FOREIGN KEY(Eid) REFERENCES Employee ON DELETE SET NULL ON UPDATE CASCADE ,
     FOREIGN KEY(Cid) REFERENCES Client ON DELETE SET NULL ON UPDATE CASCADE
 );
@@ -119,15 +119,15 @@ CREATE TABLE RENTS(
 CREATE TABLE BUYS(
     CONSTRAINT  BuyId       PRIMARY KEY(PrId, PyId),
 
-    PrId        INTEGER     NOT NULL REFERENCES ForSale(PrId) ON DELETE CASCADE ON UPDATE CASCADE, /*Modified to ForSale to be more specific*/
-    PyId        INTEGER     NOT NULL REFERENCES Payment(PyId) ON DELETE SET NULL ON UPDATE CASCADE /* TODO : if a payment is deleted, the product should be still considered as sold right ?*/
+    PrId        INTEGER     NOT NULL REFERENCES ForSale(PrId) ON DELETE CASCADE ON UPDATE CASCADE, 
+    PyId        INTEGER     NOT NULL REFERENCES Payment(PyId) ON DELETE SET NULL ON UPDATE CASCADE 
 
 );
 
 CREATE TABLE RATES(
     CONSTRAINT  RateId      PRIMARY KEY(Cid,Eid),
 
-    Cid         INTEGER     REFERENCES Client(Cid) ON DELETE SET NULL ON UPDATE CASCADE, /* TODO : we want to keep the ratings even if the client gets deleted, right ?*/
+    Cid         INTEGER     REFERENCES Client(Cid) ON DELETE SET NULL ON UPDATE CASCADE, 
     Eid         INTEGER     NOT NULL REFERENCES Employee(Eid) ON DELETE CASCADE ON UPDATE CASCADE,
     Rating      INTEGER     NULL     CHECK(Rating >= 1 and Rating <= 5)
 
@@ -135,7 +135,7 @@ CREATE TABLE RATES(
 
 CREATE TABLE PAYSFOR(
     CONSTRAINT PaysForId    PRIMARY KEY(PrId,Fid),
-    PrId        INTEGER     NOT NULL REFERENCES ForRent(PrId) ON DELETE CASCADE ON UPDATE CASCADE, /*Modified to ForRent to be more specific*/
+    PrId        INTEGER     NOT NULL REFERENCES ForRent(PrId) ON DELETE CASCADE ON UPDATE CASCADE,
     Fid         INTEGER     NOT NULL REFERENCES Fee(Fid) ON DELETE CASCADE ON UPDATE CASCADE 
 
 );

@@ -1,8 +1,8 @@
-﻿/* #1: Get the names and brands of the products that are overdue and the customers that hold them */
+﻿/* #1: Get the types and the brands of the products that are overdue, the customers that hold them, and the date they are supposed to return them */
 
-SELECT p.Brand, p.pName, c.cName
+SELECT p.Brand, p.pType, c.cName, r.EndDate
 FROM RENTS r JOIN Product p
-ON (r.PrId = p.PrId AND r.EndDate > CURRENT_DATE)
+ON (r.PrId = p.PrId AND r.EndDate > '2016-01-01')
 JOIN Client c
 ON (r.Cid = c.Cid); 
 
@@ -10,24 +10,24 @@ ON (r.Cid = c.Cid);
 rank them according to this number  */
 
 CREATE VIEW CustmrWithAmt(Cid, amt)
-AS SELECT p.Cid as Cid, SUM(p.Amount) as amt
+AS SELECT p.Cid AS Cid, SUM(p.Amount) AS amt
 FROM BUYS b, Payment p
 WHERE  b.PyId = p.PyId
 GROUP BY p.Cid;
 
-SELECT c.country, COUNT(*) as num_people
+SELECT c.country, COUNT(*) AS num_people
 FROM CustmrWithAmt cm, Client c
 WHERE cm.Cid = c.Cid AND cm.amt > 500
 GROUP BY c.country
-ORDER BY num_people;
+ORDER BY num_people DESC;
 
-/* #3: Get the types of the 'forRent' products where over 20 of the products are of condition "Poor" */
+/* #3: Get the types of the 'forRent' products where over 8 of the products are of condition "Poor" */
 
-SELECT p.pType
+SELECT p.pType, COUNT(*) AS numOfBadProduct
 FROM ForRent f, Product p
-WHERE f.PrId = p.PrId AND f.prCondition = 'poor'
+WHERE f.PrId = p.PrId AND f.prCondition = 'Bad'
 GROUP BY p.pType
-HAVING COUNT(*) >= 20;
+HAVING COUNT(*) >= 8;
 
 /* #4: Get the brands of products which the total revenu is over 1000 in the year 2016, rank them according to revenu, show revenu too  */
 
@@ -40,13 +40,13 @@ GROUP BY pr.Brand
 HAVING SUM(py.Amount) > 1000
 ORDER BY amt;
 
-/* #5: For each type of 'forRent' product, get the age of the majority  */
+/* #5: For each type of 'forRent' product, get the age(year manufactured) of the majority  */
 
 CREATE VIEW ProductYear(pType, year, num)
 AS SELECT p.pType, p.pYear, COUNT(*) AS num
 FROM ForRent f, Product p
 WHERE f.PrId = p.PrId
-GROUP BY p.pType, p.year;
+GROUP BY p.pType, p.pYear;
 
 CREATE VIEW ProductYearMax(pType, num)
 AS SELECT p.pType, MAX(p.num)
