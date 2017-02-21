@@ -10,7 +10,7 @@ ON (r.Cid = c.Cid);
 rank them according to this number  */
 
 CREATE VIEW CustmrWithAmt(Cid, amt)
-AS SELECT p.Cid, SUM(p.Amount) as amt
+AS SELECT p.Cid as Cid, SUM(p.Amount) as amt
 FROM BUYS b, Payment p
 WHERE  b.PyId = p.PyId
 GROUP BY p.Cid;
@@ -42,4 +42,14 @@ ORDER BY amt;
 
 /* #5: For each type of 'forRent' product, get the age of the majority  */
 
-SELECT f.pType, 
+CREATE VIEW ProductYear(pType, year, num)
+AS SELECT f.pType, f.year, COUNT(*) as num
+FROM ForRent f, Product p
+WHERE f.PrId = p.PrId
+GROUP BY p.pType, p.year
+
+SELECT py.pType, MAX(py.num) as majorAge
+FROM ProductYear py
+GROUP BY py.pType;
+
+
