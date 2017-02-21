@@ -1,3 +1,4 @@
+INSERT INTO branch VALUES(10,9569,'Phairview','Paris','Canada','09:00','18:00');
 INSERT INTO branch VALUES(9,1694,'Hill street','Montreal','USA','08:00',' 16:00');
 INSERT INTO branch VALUES(8,2868,'Eagle street','Hong Kong','Turkey','07:30',' 16:00');
 INSERT INTO branch VALUES(7,6649,'Strawberry Lane','Paris','Canada','07:30','18:00');
