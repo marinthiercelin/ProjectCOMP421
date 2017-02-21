@@ -96,8 +96,8 @@ CREATE TABLE Payment(
     pyDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(2),
     Method PymtMethod NOT NULL, 
     Amount REAL CHECK ( Amount >= 0 ) NOT NULL,
-    Eid INTEGER NOT NULL,
-    Cid INTEGER NOT NULL,
+    Eid INTEGER /*NOT NULL*/, /*Can be set to null, wants to keep the payment associated with them right ?*/
+    Cid INTEGER /*NOT NULL*/,
     FOREIGN KEY(Eid) REFERENCES Employee ON DELETE SET NULL ON UPDATE CASCADE ,
     FOREIGN KEY(Cid) REFERENCES Client ON DELETE SET NULL ON UPDATE CASCADE
 );
