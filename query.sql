@@ -43,13 +43,17 @@ ORDER BY amt;
 /* #5: For each type of 'forRent' product, get the age of the majority  */
 
 CREATE VIEW ProductYear(pType, year, num)
-AS SELECT f.pType, f.year, COUNT(*) as num
+AS SELECT p.pType, p.pYear, COUNT(*) AS num
 FROM ForRent f, Product p
 WHERE f.PrId = p.PrId
-GROUP BY p.pType, p.year
+GROUP BY p.pType, p.year;
 
-SELECT py.pType, MAX(py.num) as majorAge
-FROM ProductYear py
-GROUP BY py.pType;
+CREATE VIEW ProductYearMax(pType, num)
+AS SELECT p.pType, MAX(p.num)
+FROM ProductYear p
+GROUP BY p.pType;
 
+SELECT p1.pType, p1.year as majorAge
+FROM ProductYear p1, ProductYearMax p2
+WHERE p1.pType = p2.pType AND p1.num = p2.num;
 
