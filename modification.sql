@@ -35,11 +35,11 @@ WHERE c.cid = r.cid AND r.endDate >= CURRENT_DATE
 
 /* 2 give a 10% raise to all the salesman that have a rating average greater than 4.5/5 */
 
-/*SELECT s.eid, AVG(rating)
+SELECT s.eid, AVG(rating)
 FROM Salesman s, Rates r
 WHERE s.eid = r.eid
 GROUP BY (s.eid)
-HAVING AVG(rating) >= 0;*/
+HAVING AVG(rating) >= 3;
 
 UPDATE Employee
 SET salary = 1.1*salary
