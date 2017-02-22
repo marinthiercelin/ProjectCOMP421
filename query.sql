@@ -35,7 +35,7 @@ SELECT pr.Brand, SUM(py.Amount) as amt
 FROM BUYS b JOIN Product pr
 ON b.PrId = pr.PrId
 JOIN Payment py
-ON b.PyId = py.PyId AND to_char(py.pyDate, 'YYYY') = '2016'
+ON b.PyId = py.PyId AND to_char(py.pyDate, 'YYYY') = '2015'
 GROUP BY pr.Brand
 HAVING SUM(py.Amount) > 1000
 ORDER BY amt;
