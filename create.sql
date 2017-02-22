@@ -1,5 +1,11 @@
 ﻿/* Entities */
-/* TODO : Check all the foreign key for their ON DELETE and ON UPDATE statements tell me if you agree*/ 
+/* TODO : Check all the foreign key for their ON DELETE and ON UPDATE statements tell me if you agree*/
+/* WHAT I CHANGED ( Tarek you need to update the queries.sql file ) : 
+1) the rates relation needs an artificial id to allow for a client to be deleted and still keep the rating (see create table statements)
+2) the workingDays attribute of employee are now in the format 0123456 where sunday is 0 Example : '_TW_F_S' becomes '_23_5_0' 
+(ask marin or william for clarifications)
+3) the PrCondition is now of type PrConditionType, an enumerated type.
+*/ 
 
 CREATE TYPE ProductType AS ENUM('Ski', 'Snowboard', 'Poles', 'SkiBoots', 'Snowboots', 'Helmets', 'Skiwear', 'Accessories');
 
@@ -8,6 +14,7 @@ CREATE TYPE PymtMethod AS ENUM ( 'cash', 'credit', 'debit');
 
 CREATE TYPE RentingDuration AS ENUM ('1_HOUR', '1_DAY', '2_DAYS', '1_WEEK', '1_MONTH','1_YEAR');
 
+CREATE TYPE PrConditionType AS ENUM ( 'Good', 'Bad', 'Medium');
 
 CREATE TABLE Client(
     cid INTEGER PRIMARY KEY,
@@ -37,7 +44,7 @@ CREATE TABLE Employee(
     startDate DATE DEFAULT CURRENT_DATE,
     salary INTEGER NOT NULL, CHECK (salary > 0),
     bid INTEGER,
-    workingDays CHAR(7),
+    workingDays CHAR(7) CHECK workingDays LIKE '[1,\_][2,\_][3,\_][4,\_][5,\_][6,\_][0,\_]',
     startTime TIME,
     endTime TIME,
     FOREIGN KEY(Bid) REFERENCES Branch ON DELETE CASCADE ON UPDATE CASCADE
@@ -60,7 +67,7 @@ CREATE TABLE Product (
 
 CREATE TABLE ForRent (
     PrId INTEGER PRIMARY KEY,
-    prCondition VARCHAR(20) NOT NULL,
+    prCondition PrConditionType NOT NULL,
     FOREIGN KEY(PrId) REFERENCES Product ON DELETE CASCADE ON UPDATE CASCADE
 );
 
@@ -120,13 +127,13 @@ CREATE TABLE BUYS(
     CONSTRAINT  BuyId       PRIMARY KEY(PrId, PyId),
 
     PrId        INTEGER     NOT NULL REFERENCES ForSale(PrId) ON DELETE CASCADE ON UPDATE CASCADE, 
-    PyId        INTEGER     NOT NULL REFERENCES Payment(PyId) ON DELETE SET NULL ON UPDATE CASCADE 
+    PyId        INTEGER     REFERENCES Payment(PyId) ON DELETE SET NULL ON UPDATE CASCADE 
 
 );
 
 CREATE TABLE RATES(
-    CONSTRAINT  RateId      PRIMARY KEY(Cid,Eid),
-
+    CONSTRAINT  RateId      PRIMARY KEY(RateId,Eid),
+	RateId 		INTEGER     NOT NULL
     Cid         INTEGER     REFERENCES Client(Cid) ON DELETE SET NULL ON UPDATE CASCADE, 
     Eid         INTEGER     NOT NULL REFERENCES Employee(Eid) ON DELETE CASCADE ON UPDATE CASCADE,
     Rating      INTEGER     NULL     CHECK(Rating >= 1 and Rating <= 5)
