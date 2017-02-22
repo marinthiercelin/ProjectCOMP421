@@ -2,7 +2,7 @@
 
 SELECT p.Brand, p.pType, c.cName, r.EndDate
 FROM RENTS r JOIN Product p
-ON (r.PrId = p.PrId AND r.EndDate > '2016-01-01')
+ON (r.PrId = p.PrId AND r.EndDate > '2008-01-01')
 JOIN Client c
 ON (r.Cid = c.Cid); 
 
