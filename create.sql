@@ -45,7 +45,7 @@ CREATE TABLE Employee(
     salary INTEGER NOT NULL, CHECK (salary > 0),
     bid INTEGER,
     workingDays CHAR(7),
-    CONSTRAINT a CHECK (workingDays LIKE '[1,\_][2,\_][3,\_][4,\_][5,\_][6,\_][0,\_]'),
+    CONSTRAINT a CHECK (workingDays SIMILAR TO '[1,\_][2,\_][3,\_][4,\_][5,\_][6,\_][0,\_]'),
     startTime TIME,
     endTime TIME,
     FOREIGN KEY(Bid) REFERENCES Branch ON DELETE CASCADE ON UPDATE CASCADE
