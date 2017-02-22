@@ -44,7 +44,8 @@ CREATE TABLE Employee(
     startDate DATE DEFAULT CURRENT_DATE,
     salary INTEGER NOT NULL, CHECK (salary > 0),
     bid INTEGER,
-    workingDays CHAR(7) CHECK workingDays LIKE '[1,\_][2,\_][3,\_][4,\_][5,\_][6,\_][0,\_]',
+    workingDays CHAR(7),
+    CONSTRAINT a CHECK (workingDays LIKE '[1,\_][2,\_][3,\_][4,\_][5,\_][6,\_][0,\_]'),
     startTime TIME,
     endTime TIME,
     FOREIGN KEY(Bid) REFERENCES Branch ON DELETE CASCADE ON UPDATE CASCADE
@@ -133,7 +134,7 @@ CREATE TABLE BUYS(
 
 CREATE TABLE RATES(
     CONSTRAINT  RateId      PRIMARY KEY(RateId,Eid),
-	RateId 		INTEGER     NOT NULL
+    RateId 	INTEGER     NOT NULL,
     Cid         INTEGER     REFERENCES Client(Cid) ON DELETE SET NULL ON UPDATE CASCADE, 
     Eid         INTEGER     NOT NULL REFERENCES Employee(Eid) ON DELETE CASCADE ON UPDATE CASCADE,
     Rating      INTEGER     NULL     CHECK(Rating >= 1 and Rating <= 5)

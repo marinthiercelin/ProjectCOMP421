@@ -1,4 +1,4 @@
-drop table product CASCADE;
+﻿drop table product CASCADE;
 drop table employee CASCADE;
 drop table branch CASCADE;
 drop table manager CASCADE;
@@ -16,6 +16,7 @@ drop table rates CASCADE;
 drop type producttype;
 drop type pymtmethod;
 drop type rentingduration;
+drop type PrConditionType;
 
 
 
