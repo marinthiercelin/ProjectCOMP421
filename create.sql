@@ -34,7 +34,7 @@ CREATE TABLE Branch(
     City VARCHAR(30),
     Country VARCHAR(20),
     OpeningTime TIME,
-    ClosingTime TIME
+    ClosingTime TIME CHECK(closingTime > openingTime)
 );
 
 
@@ -120,7 +120,7 @@ CREATE TABLE RENTS(
 
     InitCndit   VARCHAR(50)    NOT NULL,
     StartDate   TIMESTAMP   NOT NULL    DEFAULT   CURRENT_TIMESTAMP(2),
-    EndDate     TIMESTAMP   NOT NULL
+    EndDate     TIMESTAMP   NOT NULL CHECK (endDate > startDate)
 
 );
 
