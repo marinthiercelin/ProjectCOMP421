@@ -22,8 +22,7 @@ object DbConnection extends App{
 
     //Establish Connection
     val con : Connection = DriverManager.getConnection(url, "cs421g21", "Grp42117;")
-
-    println(getClientIdFromName("Geo", con))
+    createPayment(con, 1, 1, 1)
 
     /*val stat : Statement = con.createStatement()
     /*try{
@@ -176,37 +175,101 @@ object DbConnection extends App{
     statement.close()
   }
 
+  def getNextPaymentId(statement: Statement): Int ={
+    var pyid = 1
+    try {
+      val resultSet = statement.executeQuery("SELECT MAX(cid) FROM payment")
+      resultSet.next()
+      pyid = resultSet.getInt(1) + 1
+    } catch {
+      case ex: SQLException => println("Code : " + ex.getErrorCode + " Message : " + ex.getMessage())
+    }
+    pyid
+  }
 
-  def createPayment(): Unit ={
-    print("Enter the employee ID : ")
-    val eid = readInt()
 
-    print ("Enter the client ID :")
-    val cid = readInt()
+  def createPayment(connection: Connection, eid : Int, bid : Int, cid : Int): Unit ={
+    val statement = connection.createStatement()
 
     print("Enter the payment method (cash, debit or credit)")
     val mthd = readLine()
 
+    val pyid = getNextPaymentId(statement)
+
     var choice = 0
 
     var amount = 0
+    var statements : List[String] = List()
 
     while (choice != 3) {
-      print("What would you like to do now ? : 1.Add a for sale product \n 2.Add a for rent product \n 3.Finish payment")
+      println("What would you like to do now ? : \n 1.Add a for sale product \n 2.Add a for rent product \n 3.Finish payment")
+      print("Your choice : ")
       choice = readInt()
       choice match {
-        case 1 => amount += addForSaleProduct()
-        case 2 => amount += addForRentProduct()
+        case 1 => {(amount, statements) = addForSaleProduct(bid, statement, pyid, statements, amount)}
+        case 2 => amount += addForRentProduct(bid)
+        case 3 =>
+        case _ => println("Please enter a valid option.")
       }
     }
+    statement.close()
   }
 
-  def addForSaleProduct(): Float ={
+  def displayAvailableForSaleProd(statement: Statement, bid : Int): List[(Int, Int)] ={
+
+
+    val query = "SELECT * FROM product P, forsale F WHERE P.prid = F.prid AND P.available AND P.bid=" + bid
+    var productIds : List[(Int, Int)] = List()
+
+    println("List of available forsale products in branch :\n")
+    try {
+      val resultSet = statement.executeQuery(query)
+
+      while (resultSet.next()){
+          productIds = (resultSet.getInt(1), resultSet.getInt(4)) :: productIds
+          for (i <- 1 to 9){
+            i match {
+              case 1 => print("ID : " + resultSet.getInt(i) + " ")
+              case 2 => print("Brand : " + resultSet.getString(i) + " ")
+              case 4 => print("Type : " + resultSet.getString(i) + "$ ")
+              case 9 => print("Price : " + resultSet.getInt(i))
+              case _ =>
+            }
+          }
+        println()
+      }
+    } catch {
+      case ex : SQLException => println("Code : " + ex.getErrorCode + " Message : " + ex.getMessage())
+    }
+    statement.close()
+    productIds
+  }
+
+  def addForSaleProduct(bid : Int,statement: Statement, pyid : Int, statements : List[String], amount : Int): (Float,List[String]) ={
+    println("Select a product ID from the following list")
+    val availableIds = displayAvailableForSaleProd(statement, bid)
+
+    print("Product ID : ")
+
+    var productId = readInt()
+
+    while(!availableIds.contains((productId,_))){
+      println("Please select a product ID from the list : ")
+      productId = readInt()
+    }
+
+    val price = availableIds.find(_._1==productId).get._2
+
+    (price, "INSERT INTO buys VALUES("+productId + ',' + pyid +")" :: statements)
+
+
+
+
 
   }
 
-  def addForRentProduct() : Float = {
-    
+  def addForRentProduct(bid : Int) : Float = {
+
   }
 
 }
