@@ -1,5 +1,7 @@
 
 import java.sql._
+
+import scala.annotation.tailrec
 import scala.io.StdIn._
 /**
   * Created by tarek on 16/03/17.
@@ -23,7 +25,7 @@ object DbConnection extends App{
     //Establish Connection
     val con : Connection = DriverManager.getConnection(url, "cs421g21", "Grp42117;")
 
-    println(getClientIdFromName("Geo", con))
+    //println(getClientIdFromName("Geo", con))
 
     /*val stat : Statement = con.createStatement()
     /*try{
@@ -42,11 +44,40 @@ object DbConnection extends App{
       case ex : SQLException => println(ex.getMessage)
     }
 
-    stat.close()
-    con.close()*/*/
+    stat.close()*/*/
+    makeBrandDiscount(con)
+    con.close()
   }
 
-  def displayPaymentSet(resultSet: ResultSet, clientId : Int): Unit ={
+  def proposeOptionsAndExecute(connection: Connection) : Unit = {
+    println("Choose an Option : ")
+    println("1. Create a new Payment ")
+    println("2. See all the payments of a client")
+    println("3. Get a ranking of the Salesman of a branch, on average rating")
+    println("4. Make a discount on all the product for sale of a brand (not already sold) ")
+    println("5. List the total amount received by each branch over a period of time")
+    println("6. List all the available product for rent that have a given condition")
+    println("7. quit \n")
+    try{
+      scala.io.StdIn.readInt() match {
+        case 1 =>
+        case 2 =>
+        case 3 =>
+        case 4 =>
+        case 5 =>
+        case 6 =>
+        case 7 =>
+      }
+    }catch{
+      case ex : SQLException => {
+        println(" Code : " + ex.getErrorCode)
+        println(ex.getMessage)
+      }
+      case ex : Exception => println(ex.getMessage)
+    }
+  }
+
+  /*def displayPaymentSet(resultSet: ResultSet, clientId : Int): Unit ={
     val rsmd = resultSet.getMetaData()
     val numCol = rsmd.getColumnCount()
 
@@ -206,7 +237,71 @@ object DbConnection extends App{
   }
 
   def addForRentProduct() : Float = {
-    
+
+  }*/
+
+  /**
+    * Make a discount (in percent) on all the product for sale of a certain brand
+    */
+  def makeBrandDiscount(connection: Connection): Unit ={
+    var brand = askBrand()
+    var percentage = 1 - (askPercentage() / 100.0)
+
+    def displayResult(res : ResultSet): Unit ={
+      while(res.next()){
+        var prId = res.getInt("prId")
+        var price = res.getInt("price")
+        var brand = res.getString("brand")
+        println(prId + " " + price + " " + brand)
+      }
+    }
+
+
+    // this is for display
+    val sqlQuery =
+      " SELECT fS.prId AS prId, fS.price AS price, P.brand AS brand " +
+        "FROM forSale fS, product P " +
+        "WHERE fS.prID = P.prId AND P.available = true "+
+        "AND P.brand = '" + brand + "';"
+
+    // this is for modification
+    val sqlModification = "UPDATE forSale AS fS " +
+      "SET price = " +  percentage + " * price " +
+      "FROM Product AS P " +
+      "WHERE fS.prID = P.prId AND P.available = true "+
+      "AND P.brand = '" + brand + "';"
+
+    try {
+      var beforeQuery = connection.createStatement()
+      var resBefore = beforeQuery.executeQuery(sqlQuery)
+      println("Before : ")
+      displayResult(resBefore)
+
+      var sqlUpdate = connection.createStatement()
+      var updatedRows = sqlUpdate.executeUpdate(sqlModification)
+      println("Updated : " + updatedRows)
+
+      var afterQuery = connection.createStatement()
+      var resAfter = afterQuery.executeQuery(sqlQuery)
+      print("After : ")
+      displayResult(resAfter)
+    }catch {
+      case ex : SQLException =>  print("Code : " + ex.getErrorCode + " Message : " + ex.getMessage)
+    }
+
+
+  }
+
+  def askBrand() : String = {
+    print("Enter the name of the brand : ")
+    scala.io.StdIn.readLine()
+  }
+
+  @tailrec
+  def askPercentage() : Int = {
+    print("Enter the percentage of discount : ")
+    var discount = scala.io.StdIn.readInt()
+    if(discount >= 0 && discount <= 100) discount else askPercentage()
   }
 
 }
