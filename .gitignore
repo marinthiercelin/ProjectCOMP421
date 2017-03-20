@@ -16,8 +16,8 @@ Deliverable3/Comp421Application/.idea/dictionaries
 .idea/**/uiDesigner.xml
 
 # Gradle:
-.idea/**/gradle.xml
-.idea/**/libraries
+Deliverable3/Comp421Application/.idea/gradle.xml
+Deliverable3/Comp421Application/.idea/libraries
 
 # Mongo Explorer plugin:
 .idea/**/mongoSettings.xml
