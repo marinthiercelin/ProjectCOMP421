@@ -367,7 +367,7 @@ object DbConnection extends App{
     }
   }
 
-  def askPeriodOfTime() : Int = {
+  /*def askPeriodOfTime() : Int = {
     println("Enter the start date : ")
 
   }
@@ -380,6 +380,6 @@ object DbConnection extends App{
     print("Year (YYYY):")
     var year = readInt()
     var date : java.sql.Date = new java.sql.Date()
-  }
+  }*/
 
 }
