@@ -1,5 +1,6 @@
 
 import java.sql._
+import java.util.GregorianCalendar
 
 import scala.annotation.tailrec
 import scala.io.StdIn._
@@ -50,7 +51,7 @@ object DbConnection extends App{
         case 4 => makeBrandDiscount(connection)
         case 5 =>
         case 6 =>
-        case 7 => return
+        case 7 => println("Good Bye !") ; return
       }
     }catch{
       case ex : SQLException => {
@@ -346,6 +347,39 @@ object DbConnection extends App{
     print("Enter the percentage of discount : ")
     var discount = scala.io.StdIn.readInt()
     if (discount >= 0 && discount <= 100) discount else askPercentage()
+  }
+
+  def getAllPaymentsOfBranchOverPeriod(connection: Connection): Unit ={
+    var branchId = askBranchId()
+
+
+  }
+
+  @tailrec
+  def askBranchId(): Int ={
+    print("Enter the id of the branch : ")
+    try {
+      readInt()
+    }catch{
+      case ex : Exception =>
+        println("Wrong format, input an integer")
+        askBranchId()
+    }
+  }
+
+  def askPeriodOfTime() : Int = {
+    println("Enter the start date : ")
+
+  }
+
+  def askDate() : java.sql.Date = {
+    print("Day (DD): ")
+    var day = readInt()
+    print("Month (MM): ")
+    var month  = readInt()
+    print("Year (YYYY):")
+    var year = readInt()
+    var date : java.sql.Date = new java.sql.Date()
   }
 
 }
