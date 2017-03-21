@@ -1,6 +1,6 @@
 
 import java.sql._
-import java.util.GregorianCalendar
+import java.util._
 
 import scala.annotation.tailrec
 import scala.io.StdIn._
@@ -49,7 +49,7 @@ object DbConnection extends App{
         case 2 =>
         case 3 =>
         case 4 => makeBrandDiscount(connection)
-        case 5 =>
+        case 5 => getAllPaymentsOfBranchOverPeriod(connection)
         case 6 =>
         case 7 => println("Good Bye !") ; return
       }
@@ -330,8 +330,11 @@ object DbConnection extends App{
       var resAfter = afterQuery.executeQuery(sqlQuery)
       print("After : ")
       displayResult(resAfter)
+      beforeQuery.close()
+      sqlUpdate.close()
+      afterQuery.close()
     }catch {
-      case ex : SQLException =>  print("Code : " + ex.getErrorCode + " Message : " + ex.getMessage)
+      case ex : SQLException =>  print("Code : " + ex.getErrorCode + " Message : " + ex.getMessage )
     }
 
 
@@ -351,8 +354,9 @@ object DbConnection extends App{
 
   def getAllPaymentsOfBranchOverPeriod(connection: Connection): Unit ={
     var branchId = askBranchId()
-
-
+    var period : Period = askPeriodOfTime()
+    println("Date 1 :" + period._1.toString)
+    println("Date 2 :" + period._2.toString)
   }
 
   @tailrec
@@ -367,9 +371,15 @@ object DbConnection extends App{
     }
   }
 
-  def askPeriodOfTime() : Int = {
-    println("Enter the start date : ")
+  type Period = (java.sql.Date, java.sql.Date)
 
+  def askPeriodOfTime() : Period = {
+    println("Give the period : ")
+    println("Enter the start date : ")
+    var startDate =  askDate()
+    println("Enter the end date :")
+    var endDate = askDate()
+    (startDate,endDate)
   }
 
   def askDate() : java.sql.Date = {
@@ -379,7 +389,9 @@ object DbConnection extends App{
     var month  = readInt()
     print("Year (YYYY):")
     var year = readInt()
-    var date : java.sql.Date = new java.sql.Date()
+    var calendar = Calendar.getInstance()
+    calendar.set(year, month - 1, day, 0, 0)
+    new java.sql.Date(calendar.getTimeInMillis())
   }
 
 }
