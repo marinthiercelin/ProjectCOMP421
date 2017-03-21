@@ -1,8 +1,9 @@
 import java.sql._
+import scala.io.StdIn._
 /**
   * Created by tarek on 21/03/17.
   */
-class DbConnection2 extends App{
+object DbConnection2 extends App{
 
   main()
 
@@ -22,7 +23,7 @@ class DbConnection2 extends App{
     //Establish Connection
     val con : Connection = DriverManager.getConnection(url, "cs421g21", "Grp42117;")
 
-    //createPayment(con, 1, 1, 1)
+    createPayment(con, 1, 1, 1)
     //makeBrandDiscount(con)
     //proposeOptionsAndExecute(con)
     con.close()
@@ -116,8 +117,7 @@ class DbConnection2 extends App{
     cid
   }
 
-  def getClientIdFromName(cname : String, connection: Connection): Int ={
-    val statement = connection.createStatement()
+  def getClientIdFromName(cname : String, statement: Statement): Int ={
 
     val sqlQuery = "SELECT cid FROM client WHERE cname = \'" + cname + "\'"
 
@@ -125,7 +125,7 @@ class DbConnection2 extends App{
     try {
       val resultSet = statement.executeQuery(sqlQuery)
       if (resultSet.next()) {
-        resultSet.getInt(1)
+        cid = resultSet.getInt(1)
       } else {
         throw new SQLException("Client ID not found.")
       }
@@ -134,16 +134,13 @@ class DbConnection2 extends App{
       case ex : SQLException => println("Code : " + ex.getErrorCode + " Message : " + ex.getMessage())
     }
 
-    0
+    cid
 
 
   }
 
   //Creates a new Client
-  def newClient(cName : String, streetNum : Int, street: String, city: String, country : String, connection: Connection): Unit ={
-    val statement = connection.createStatement()
-
-
+  def newClient(cName : String, streetNum : Int, street: String, city: String, country : String, statement: Statement): Int ={
     val cid: Int = getNextCid(statement)
 
     val sqlQuery = "INSERT INTO client VALUES("+ cid + ",\'" + cName + "\',\'" + streetNum + "\',\'" + street + "\',\'" + city + "\',\'"+ country + "\')"
@@ -155,13 +152,14 @@ class DbConnection2 extends App{
     }
 
     println("Client created successfully.")
-    statement.close()
+
+    cid
   }
 
   def getNextPaymentId(statement: Statement): Int ={
     var pyid = 1
     try {
-      val resultSet = statement.executeQuery("SELECT MAX(cid) FROM payment")
+      val resultSet = statement.executeQuery("SELECT MAX(pyid) FROM payment")
       resultSet.next()
       pyid = resultSet.getInt(1) + 1
     } catch {
@@ -170,36 +168,119 @@ class DbConnection2 extends App{
     pyid
   }
 
+  def promptEmployeeId(): Int = {
+    print("Please enter the employee ID :")
+    val id = readInt()
+    id
+  }
+
+  def promptClientId(statement: Statement): Int ={
+    println("Is the client already registered ?(y/n)")
+    var ans = readChar()
+
+    while (ans != 'y' && ans != 'n'){
+      println("Please enter a valid answer (y/n):")
+      ans = readChar()
+    }
+
+    print("Enter the client's name : ")
+    val name = readLine()
+
+    if (ans == 'n') {
+
+      print("Enter the client's street number : ")
+      val snum = readInt()
+      print("Enter the street name : ")
+      val sname = readLine()
+      print("Enter the city of residence : ")
+      val city = readLine()
+      print("Enter the country of residence : ")
+      val country = readLine()
+      newClient(name, snum, sname, city, country, statement)
+    } else {
+      getClientIdFromName(name, statement)
+
+    }
+
+
+
+  }
+
+  def getBidFromEid(eid : Int, statement: Statement): Int = {
+    val query = "SELECT bid FROM employee WHERE eid="+eid
+
+    var bid = 0
+    try {
+      val res = statement.executeQuery(query)
+      if (res.next()){
+        bid = res.getInt(1)
+      }
+    } catch {
+      case ex :SQLException => println("Code : " + ex.getErrorCode + " Message : " + ex.getMessage())
+    }
+    bid
+  }
 
   def createPayment(connection: Connection, eid : Int, bid : Int, cid : Int): Unit ={
     val statement = connection.createStatement()
-    print("Enter the payment method (cash, debit or credit)")
+
+    val eid = promptEmployeeId()
+    val cid = promptClientId(statement)
+    val bid = getBidFromEid(eid, statement)
+
+    print("Enter the payment method (cash, debit or credit) : ")
     val mthd = readLine()
 
+    println()
+
     val pyid = getNextPaymentId(statement)
-
     var choice = 0
-
-    var amount = 0
+    var amount = 0f
     var statements : List[String] = List()
 
+
+
     while (choice != 3) {
-      println("What would you like to do now ? : \n 1.Add a for sale product \n 2.Add a for rent product \n 3.Finish payment")
+      println("What would you like to do now ? : \n 1.Add a for sale product \n 2.Add a for rent product \n 3.Finish payment\n")
       print("Your choice : ")
       choice = readInt()
+
       choice match {
-        case 1 => {(amount, statements) = addForSaleProduct(bid, statement, pyid, statements, amount)}
-        case 2 => amount += addForRentProduct(bid)
+        case 1 => {val res = addForSaleProduct(bid, statement, pyid)
+                  amount = amount + res._1
+                  statements = res._2 ++ statements}
+        case 2 => { val res = addForRentProduct(bid, statement, pyid, cid)
+                    amount = amount + res._1
+                    statements = res._2 ++ statements
+        }
         case 3 =>
         case _ => println("Please enter a valid option.")
       }
     }
+
+    if (statements.isEmpty){
+      println("Payment is empty, aborting creation..")
+    } else {
+
+      print("Total is " + amount+"$ .What would be the discount percentage ? : ")
+      val discount = readInt()
+
+      val paymentQuery = "INSERT INTO payment VALUES("+pyid+','+discount+",DEFAULT,\'"+mthd+"\',"+amount+','+eid+','+cid+")"
+
+      statements = paymentQuery :: statements
+
+      try{
+        statements.foreach(statement.executeUpdate(_))
+      } catch {
+        case ex : SQLException => println("Code : " + ex.getErrorCode + " Message : " + ex.getMessage())
+      }
+    }
+
     statement.close()
   }
 
+  //Displays all available for sale product and returns a list of [prodID, price]
   def displayAvailableForSaleProd(statement: Statement, bid : Int): List[(Int, Int)] ={
-
-
     val query = "SELECT * FROM product P, forsale F WHERE P.prid = F.prid AND P.available AND P.bid=" + bid
     var productIds : List[(Int, Int)] = List()
 
@@ -208,13 +289,13 @@ class DbConnection2 extends App{
       val resultSet = statement.executeQuery(query)
 
       while (resultSet.next()){
-          productIds = (resultSet.getInt(1), resultSet.getInt(4)) :: productIds
+          productIds = (resultSet.getInt(1), resultSet.getInt(9)) :: productIds
           for (i <- 1 to 9){
             i match {
               case 1 => print("ID : " + resultSet.getInt(i) + " ")
               case 2 => print("Brand : " + resultSet.getString(i) + " ")
-              case 4 => print("Type : " + resultSet.getString(i) + "$ ")
-              case 9 => print("Price : " + resultSet.getInt(i))
+              case 4 => print("Type : " + resultSet.getString(i) + " ")
+              case 9 => print("Price : " + resultSet.getInt(i) + "$ ")
               case _ =>
             }
           }
@@ -223,31 +304,145 @@ class DbConnection2 extends App{
     } catch {
       case ex : SQLException => println("Code : " + ex.getErrorCode + " Message : " + ex.getMessage())
     }
-    statement.close()
+    //statement.close()
     productIds
   }
 
-  def addForSaleProduct(bid : Int,statement: Statement, pyid : Int, statements : List[String], amount : Int): (Float,List[String]) ={
-    println("Select a product ID from the following list")
+
+  //Creates a Buys relationship between the product and the payment, and sets the product to unavailable
+  def addForSaleProduct(bid : Int,statement: Statement, pyid : Int): (Float,List[String]) ={
+    println("Select a product ID from the following list\n")
     val availableIds = displayAvailableForSaleProd(statement, bid)
 
     print("Product ID : ")
 
     var productId = readInt()
 
-    while(!availableIds.contains((productId,_))){
+    while(!availableIds.exists(_._1 == productId)){
       println("Please select a product ID from the list : ")
       productId = readInt()
     }
 
     val price = availableIds.find(_._1==productId).get._2
 
-    (price, "INSERT INTO buys VALUES("+productId + ',' + pyid +")" :: statements)
+    println("Product added successfully.\n")
+
+    (price, List("INSERT INTO buys VALUES("+productId + ',' + pyid +")", "UPDATE product SET available=false WHERE prid="+productId))
 
   }
 
-  def addForRentProduct(bid : Int) : Float = {
-      0
+  //Returns a list of available for rent products in the given branch and returns a list of (prid, condition)
+  def displayAvailableForRentProducts(statement: Statement, bid : Int) : List[(Int, String)] = {
+    val query = "SELECT * FROM product P, forrent F WHERE P.prid = F.prid AND P.available AND P.bid=" + bid
+    var productIds : List [(Int, String)] = List()
+
+    println("List of all available for rent products in branch : \n")
+
+    try {
+      val resultSet = statement.executeQuery(query)
+
+      while (resultSet.next()){
+        productIds = (resultSet.getInt(1),resultSet.getString(9))  :: productIds
+        for (i <- 1 to 9){
+          i match {
+            case 1 => print("ID : " + resultSet.getInt(i) + " ")
+            case 2 => print("Brand : " + resultSet.getString(i) + " ")
+            case 4 => print("Type : " + resultSet.getString(i) + " ")
+            case 9 => print("Condition : " + resultSet.getString(i) + " ")
+            case _ =>
+          }
+        }
+        println()
+      }
+    } catch {
+      case ex : SQLException => println("Code : " + ex.getErrorCode + " Message : " + ex.getMessage())
+    }
+    println()
+    productIds
+
+  }
+
+  def displayFeesForProduct(statement: Statement, prodId : Int) : List[(Int,Int, String)]= {
+    val query = "SELECT * FROM paysfor P, fee F WHERE P.fid=F.fid AND P.prid="+prodId
+
+    var fees : List[(Int, Int,  String)] = List()
+    try {
+      val resultSet = statement.executeQuery(query)
+
+      while (resultSet.next()){
+        fees = (resultSet.getInt(2), resultSet.getInt(4), resultSet.getString(5)) :: fees
+        for (i<- 1 to 5){
+
+          i match {
+            case 2 => print("Fee ID : " + resultSet.getInt(i) + " ")
+            case 4 => print("Price : " + resultSet.getInt(i) + "$ ")
+            case 5 => print("Duration : " + resultSet.getString(i) + " ")
+            case _ =>
+          }
+
+        }
+        println()
+      }
+    } catch {
+      case ex : SQLException => println("Code : " + ex.getErrorCode + " Message : " + ex.getMessage())
+    }
+    print('\n')
+    fees
+  }
+
+  def addForRentProduct(bid : Int, statement: Statement, pyid : Int, cid : Int) : (Int, List[String]) = {
+    println("Select a product ID from the following list\n")
+    val availableIds = displayAvailableForRentProducts(statement, bid)
+
+    //Prompt product ID
+    print("Selected Product ID : ")
+    var productId = readInt()
+
+    while(!availableIds.exists(_._1 == productId)){
+      println("Please select a product ID from the list : ")
+      productId = readInt()
+    }
+
+    //initial condition of the product
+    val initCondition = availableIds.find(_._1 == productId).get._2
+
+    println("Select a rental duration from the following list\n")
+    val fees = displayFeesForProduct(statement, productId)
+
+    //Prompt Fee ID
+    print("Selected Fee ID : ")
+    var feeId = readInt()
+
+    while(!fees.exists(_._1 == feeId)){
+      println("Please select a fee ID from the list : ")
+      feeId = readInt()
+    }
+
+    val fee = fees.find(_._1 == feeId).get
+
+    val duration = getDuration(fee._3)
+
+    val rentsQuery = "INSERT INTO rents VALUES("+cid + "," + pyid + ","+productId +",\'"+initCondition+"\', DEFAULT, CURRENT_TIMESTAMP(2) + interval "+duration +" )"
+
+    val updateQuery = "UPDATE product SET available=false WHERE prid="+productId
+
+    println("Product added successfully.\n")
+    (fee._2, List(rentsQuery, updateQuery))
+
+
+
+  }
+
+  def getDuration(fee : String): String = {
+    fee match {
+      case "1_HOUR"=> "\'1 hour\'"
+      case "1_DAY" => "\'1 day\'"
+      case "2_DAYS" => "\'2 day\'"
+      case "1_WEEK" => "\'7 day\'"
+      case "1_MONTH" => "\'1 month\'"
+      case "1_YEAR" => "\'1 year\'"
+      case _ => ""
+    }
   }
 
 
