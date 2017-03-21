@@ -14,6 +14,9 @@ FROM Payment
 WHERE DATE(PyDate) > '2015-03-22' AND DATE(PyDate) < '2017-03-22';
 
 
-SELECT *
-FROM Payment p, Employee e, Branch b 
-WHERE DATE(PyDate) > '2015-03-22' AND DATE(PyDate) < '2017-03-22';
+SELECT e.bid, SUM(p.amount) AS total
+FROM Payment p, Employee e 
+WHERE DATE(p.PyDate) > '2015-03-22' AND DATE(p.PyDate) < '2017-03-22'
+	AND e.eid = p.eid 
+GROUP BY e.bid
+ORDER BY total DESC;
