@@ -1,5 +1,196 @@
 /usr/lib/jvm/java-1.8.0-openjdk-amd64/bin/java -Didea.launcher.port=7532 -Didea.launcher.bin.path=/home/marin/.local/share/umake/ide/idea/bin -Dfile.encoding=UTF-8 -classpath /usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/lib/charsets.jar:/usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/lib/ext/cldrdata.jar:/usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/lib/ext/dnsns.jar:/usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/lib/ext/icedtea-sound.jar:/usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/lib/ext/jaccess.jar:/usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/lib/ext/localedata.jar:/usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/lib/ext/nashorn.jar:/usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/lib/ext/sunec.jar:/usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/lib/ext/sunjce_provider.jar:/usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/lib/ext/sunpkcs11.jar:/usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/lib/ext/zipfs.jar:/usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/lib/jce.jar:/usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/lib/jsse.jar:/usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/lib/management-agent.jar:/usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/lib/resources.jar:/usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/lib/rt.jar:/home/marin/comp421/ProjectCOMP421/Deliverable3/Comp421Application/out/production/Comp421Application:/home/marin/comp421/postgresql-42.0.0.jre6.jar:/home/marin/.ivy2/cache/org.scala-lang/scala-reflect/jars/scala-reflect-2.12.1.jar:/home/marin/.ivy2/cache/org.scala-lang/scala-library/jars/scala-library-2.12.1.jar:/home/marin/.local/share/umake/ide/idea/lib/idea_rt.jar com.intellij.rt.execution.application.AppMain DbConnection
 
+//Create payment
+Choose an Option : 
+1. Create a new Payment 
+2. See all the payments of a client
+3. Get the average rankings of the employees of a branch
+4. Make a discount on all the product for sale of a brand (not already sold) 
+5. Rank the branches by the amount they received over a period of time
+6. List all the available product for rent that have a given condition
+7. quit 
+Input your choice : 
+1
+Please enter the employee ID :20
+Is the client already registered ?(y/n)
+y
+Enter the client's name : Kit Robinson
+Enter the payment method (cash, debit or credit) : debit
+
+What would you like to do now ? : 
+ 1.Add a for sale product 
+ 2.Add a for rent product 
+ 3.Finish payment
+
+Your choice : 1
+Select a product ID from the following list
+
+List of available forsale products in branch :
+
+ID : 2 Brand : Armada Type : Helmets Price : 82$ 
+ID : 5 Brand : Salomon Type : Poles Price : 56$ 
+ID : 6 Brand : Armada Type : Snowboard Price : 493$ 
+ID : 7 Brand : Salomon Type : Helmets Price : 88$ 
+ID : 8 Brand : Burton Type : Snowboots Price : 212$ 
+ID : 10 Brand : Armada Type : SkiBoots Price : 87$ 
+ID : 11 Brand : Armada Type : Poles Price : 119$ 
+ID : 12 Brand : Burton Type : Snowboard Price : 423$ 
+ID : 13 Brand : Nordica Type : Poles Price : 208$ 
+ID : 16 Brand : Armada Type : Helmets Price : 58$ 
+ID : 17 Brand : Nordica Type : Helmets Price : 85$ 
+ID : 19 Brand : Burton Type : Helmets Price : 215$ 
+ID : 20 Brand : Armada Type : Skiwear Price : 137$ 
+ID : 3 Brand : Rossignol Type : Poles Price : 7$ 
+ID : 9 Brand : Rossignol Type : Snowboard Price : 52$ 
+ID : 14 Brand : Rossignol Type : Accessories Price : 11$ 
+ID : 15 Brand : Rossignol Type : SkiBoots Price : 12$ 
+ID : 18 Brand : Rossignol Type : Helmets Price : 19$ 
+Product ID : 20
+Product added successfully.
+
+What would you like to do now ? : 
+ 1.Add a for sale product 
+ 2.Add a for rent product 
+ 3.Finish payment
+
+Your choice : 3
+Total is 137.0$ .What would be the discount percentage ? : 10
+Payment created successfully.
+
+
+Choose an Option : 
+1. Create a new Payment 
+2. See all the payments of a client
+3. Get the average rankings of the employees of a branch
+4. Make a discount on all the product for sale of a brand (not already sold) 
+5. Rank the branches by the amount they received over a period of time
+6. List all the available product for rent that have a given condition
+7. quit 
+Input your choice : 
+1
+Please enter the employee ID :30
+Is the client already registered ?(y/n)
+n
+Enter the client's name : Bruce Wayne
+Enter the client's street number : 666
+Enter the street name : Batcave
+Enter the city of residence : Gotham City
+Enter the country of residence : USA
+Client created successfully.
+Enter the payment method (cash, debit or credit) : cash
+
+What would you like to do now ? : 
+ 1.Add a for sale product 
+ 2.Add a for rent product 
+ 3.Finish payment
+
+Your choice : 2
+Select a product ID from the following list
+
+List of all available for rent products in branch : 
+
+ID : 221 Brand : Rossignol Type : SkiBoots Condition : Medium 
+ID : 222 Brand : Nordica Type : Snowboard Condition : Medium 
+ID : 223 Brand : Burton Type : SkiBoots Condition : Bad 
+ID : 224 Brand : Rossignol Type : Snowboard Condition : Good 
+ID : 225 Brand : Rossignol Type : Snowboard Condition : Bad 
+ID : 226 Brand : Rossignol Type : Snowboard Condition : Good 
+ID : 227 Brand : Salomon Type : Poles Condition : Medium 
+ID : 228 Brand : Nordica Type : Snowboard Condition : Medium 
+ID : 229 Brand : Nordica Type : Poles Condition : Medium 
+ID : 230 Brand : Burton Type : Ski Condition : Bad 
+ID : 231 Brand : Nordica Type : Snowboots Condition : Medium 
+ID : 232 Brand : Armada Type : Poles Condition : Medium 
+ID : 233 Brand : Rossignol Type : Snowboots Condition : Medium 
+ID : 234 Brand : Salomon Type : Poles Condition : Bad 
+ID : 235 Brand : Rossignol Type : Poles Condition : Bad 
+ID : 236 Brand : Nordica Type : Snowboots Condition : Bad 
+ID : 237 Brand : Burton Type : Poles Condition : Good 
+ID : 238 Brand : Salomon Type : Snowboots Condition : Bad 
+ID : 239 Brand : Rossignol Type : Snowboard Condition : Bad 
+ID : 240 Brand : Salomon Type : Ski Condition : Good 
+
+Selected Product ID : 235
+Select a rental duration from the following list
+
+Fee ID : 4 Price : 100$ Duration : 1_YEAR 
+Fee ID : 10 Price : 50$ Duration : 1_MONTH 
+Fee ID : 17 Price : 20$ Duration : 1_WEEK 
+Fee ID : 19 Price : 90$ Duration : 1_DAY 
+Fee ID : 29 Price : 6$ Duration : 1_HOUR 
+
+Selected Fee ID : 10
+Product added successfully.
+
+What would you like to do now ? : 
+ 1.Add a for sale product 
+ 2.Add a for rent product 
+ 3.Finish payment
+
+Your choice : 3
+Total is 50.0$ .What would be the discount percentage ? : 0
+Payment created successfully.
+
+//See payments of client
+Choose an Option : 
+1. Create a new Payment 
+2. See all the payments of a client
+3. Get the average rankings of the employees of a branch
+4. Make a discount on all the product for sale of a brand (not already sold) 
+5. Rank the branches by the amount they received over a period of time
+6. List all the available product for rent that have a given condition
+7. quit 
+Input your choice : 
+2
+Please enter a client name : Bruce Wayne
+Sorted payments for client 306
+
+Payment id : 99 Discount : 0% Payment timestamp : 2017-03-22 12:29:41.86 Payment method : cash Total Amount : 50.0 Employee ID : 30 
+
+
+//See average rankings of employees in a branch
+Choose an Option : 
+1. Create a new Payment 
+2. See all the payments of a client
+3. Get the average rankings of the employees of a branch
+4. Make a discount on all the product for sale of a brand (not already sold) 
+5. Rank the branches by the amount they received over a period of time
+6. List all the available product for rent that have a given condition
+7. quit 
+Input your choice : 
+3
+Enter the branch ID : 2
+Sorted employee averages for branch 2
+
+Employee id : 25 
+Employee name : Louvenia Parker 
+Average rating : 5.0 
+
+Employee id : 22 
+Employee name : Annabell Robinson 
+Average rating : 5.0 
+
+Employee id : 40 
+Employee name : Vera Baker 
+Average rating : 3.0 
+
+Employee id : 27 
+Employee name : Kylee Hill 
+Average rating : 3.0 
+
+Employee id : 35 
+Employee name : Annabell Anderson 
+Average rating : 3.0 
+
+Employee id : 24 
+Employee name : Enola Jackson 
+Average rating : 2.0 
+
+Employee id : 31 
+Employee name : Cheri Clark 
+Average rating : 1.5 
+
+//Make a discount on all the product for sale of a brand
 Choose an Option : 
 1. Create a new Payment 
 2. See all the payments of a client
@@ -69,6 +260,8 @@ Product : 190 Price before : 58 after : 46
 Product : 193 Price before : 61 after : 49
 Product : 197 Price before : 22 after : 18
 
+
+//Rank the branches by the amount they received over a period of time
 Choose an Option : 
 1. Create a new Payment 
 2. See all the payments of a client
@@ -109,6 +302,8 @@ Ranking :
 8 : Branch 10 with 456$ over that period 
 9 : Branch 9 with 55$ over that period 
 
+
+//List all the available product for rent that have a given condition
 Choose an Option : 
 1. Create a new Payment 
 2. See all the payments of a client
@@ -139,6 +334,8 @@ Product : 236 Brand :Nordica Name : null Condition : Bad Branch : 2
 Product : 238 Brand :Salomon Name : null Condition : Bad Branch : 2
 Product : 239 Brand :Rossignol Name : null Condition : Bad Branch : 2
 
+
+//Quit
 Choose an Option : 
 1. Create a new Payment 
 2. See all the payments of a client

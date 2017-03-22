@@ -18,7 +18,7 @@ object DbConnection2 {
         i match {
           case 1 => print("Payment id : "+resultSet.getInt(i) + " ")
           case 2 => print("Discount : "+resultSet.getInt(i) + "% ")
-          case 3 => print("Payment timestamp : " +resultSet.getDate(i).toString + " ")
+          case 3 => print("Payment timestamp : " +resultSet.getTimestamp(i).toString + " ")
           case 4 => print("Payment method : " + resultSet.getString(i) + " ")
           case 5 => print("Total Amount : " +resultSet.getFloat(i) + " ")
           case 6 => print("Employee ID : "+ +resultSet.getInt(i) + " ")

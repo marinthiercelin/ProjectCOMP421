@@ -11,6 +11,7 @@ import scala.io.StdIn._
   * Created by tarek on 16/03/17.
   */
 object DbConnection extends App{
+
   main()
 
   def main(){
