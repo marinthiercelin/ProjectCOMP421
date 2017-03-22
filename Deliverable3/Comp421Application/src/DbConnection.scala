@@ -52,7 +52,7 @@ object DbConnection extends App{
         case 3 =>
         case 4 => makeBrandDiscount(connection)
         case 5 => orderBranchesByPaymentOverPeriod(connection)
-        case 6 =>
+        case 6 => getAllRentalProductOfCondition(connection)
         case 7 => println("Good Bye !") ; return
         case _ => println("You need to choose between options 1 to 7 !")
       }
@@ -209,5 +209,50 @@ object DbConnection extends App{
     }
   }
 
+  def getAllRentalProductOfCondition(connection : Connection): Unit ={
+    def displayResult(res : ResultSet): Unit ={
+      while(res.next()){
+        var prId = res.getInt("prId")
+        var brand = res.getString("brand")
+        var name = res.getString("name")
+        var condition = res.getString("condition")
+        var branchId = res.getInt("bid")
+        println("Product : "+ prId + " Brand :" + brand + " Name : " + name + " " +
+          "Condition : " + condition + " Branch : " + branchId)
+
+      }
+    }
+    println("\nThis section displays all the rental equipment of a certain condition in a given branch\n")
+    var branchId = askInteger(1, Integer.MAX_VALUE, "Input the branch id : ")
+    var condition = askCondition()
+    try{
+      var statement = connection.createStatement()
+      var res = statement.executeQuery("SELECT fR.prId AS prId, P.brand AS brand, P.pname AS name, " +
+        "fR.PrCondition AS condition, P.bid AS bid " +
+        "FROM forRent fR , product P " +
+        "WHERE P.prId = fr.prId " +
+        "AND P.bid = "+ branchId + " " +
+        "AND P.available = true " +
+        "AND fR.PrCondition = '" + condition +"' " +
+        "ORDER BY prId;")
+      displayResult(res)
+      statement.close()
+    }catch{
+      case ex : java.sql.SQLException => print("Code : " + ex.getErrorCode + " Message : " + ex.getMessage )
+      case ex : Exception => ex.printStackTrace()
+    }
+  }
+
+  def askCondition() : String = {
+    println("Different conditions : ")
+    println("1. Good")
+    println("2. Medium")
+    println("3. Bad")
+    askInteger(1,3,"Input your choice : ") match {
+      case 1 => "Good"
+      case 2 => "Medium"
+      case 3 => "Bad"
+    }
+  }
 
 }
