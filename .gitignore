@@ -6,6 +6,9 @@ Deliverable3/Comp421Application/.idea/workspace.xml
 Deliverable3/Comp421Application/.idea/tasks.xml
 Deliverable3/Comp421Application/.idea/dictionaries
 
+#out ?
+Deliverable3/Comp421Application/out/*
+
 # Sensitive or high-churn files:
 .idea/**/dataSources/
 .idea/**/dataSources.ids
