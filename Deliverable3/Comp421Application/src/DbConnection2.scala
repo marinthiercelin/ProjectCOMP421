@@ -3,37 +3,13 @@ import scala.io.StdIn._
 /**
   * Created by tarek on 21/03/17.
   */
-object DbConnection2 extends App{
-
-  main()
-
-  def main(){
-
-    //Try to load the driver
-    try{
-      DriverManager.registerDriver(new org.postgresql.Driver())
-    } catch {
-      case ex : SQLException => println(ex.getMessage)
-    }
-
-
-    //Url for connection
-    val url = "jdbc:postgresql://comp421.cs.mcgill.ca:5432/cs421"
-
-    //Establish Connection
-    val con : Connection = DriverManager.getConnection(url, "cs421g21", "Grp42117;")
-
-    createPayment(con, 1, 1, 1)
-    //makeBrandDiscount(con)
-    //proposeOptionsAndExecute(con)
-    con.close()
-  }
+object DbConnection2 {
 
   def displayPaymentSet(resultSet: ResultSet, clientId : Int): Unit ={
     val rsmd = resultSet.getMetaData()
     val numCol = rsmd.getColumnCount()
 
-    println("Sorted payments for client " + clientId)
+    println("Sorted payments for client " + clientId+'\n')
 
 
     while (resultSet.next()){
@@ -55,9 +31,17 @@ object DbConnection2 extends App{
   }
 
   //Returns a result set
-  def getPaymentsofClient(clientId : Int, connection: Connection) : Unit ={
+  def getPaymentsofClient(connection: Connection) : Unit ={
     val stat = connection.createStatement()
+
+    print("Please enter a client name : ")
+    val cname = readLine()
+    val clientId = getClientIdFromName(cname, stat)
+
     val sqlStatement = "SELECT * FROM payment WHERE cid = "+clientId + " ORDER BY pydate"
+
+
+
     try {
       val resultSet = stat.executeQuery(sqlStatement)
       displayPaymentSet(resultSet, clientId)
@@ -88,8 +72,12 @@ object DbConnection2 extends App{
 
   }
 
-  def getAverageRankingOfEmployees(branchid : Int, connection: Connection) : Unit = {
+  def getAverageRankingOfEmployees( connection: Connection) : Unit = {
     val statement = connection.createStatement()
+
+    print("Enter the branch ID : ")
+    val branchid = readInt()
+
     val sqlQuery = "SELECT E.eid, E.ename,  A.rating FROM employee E, (" +
       "SELECT eid, AVG(rating) AS rating " +
       "FROM rates " +
@@ -221,7 +209,7 @@ object DbConnection2 extends App{
     bid
   }
 
-  def createPayment(connection: Connection, eid : Int, bid : Int, cid : Int): Unit ={
+  def createPayment(connection: Connection): Unit ={
     val statement = connection.createStatement()
 
     val eid = promptEmployeeId()
@@ -276,6 +264,8 @@ object DbConnection2 extends App{
       }
     }
 
+
+    println("Payment created successfully.\n")
     statement.close()
   }
 

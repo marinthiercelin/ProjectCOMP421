@@ -6,6 +6,7 @@ import scala.List
 import scala.annotation.tailrec
 import scala.io.StdIn._
 
+
 /**
   * Created by tarek on 16/03/17.
   */
@@ -39,7 +40,7 @@ object DbConnection extends App{
     println("\nChoose an Option : ")
     println("1. Create a new Payment ")
     println("2. See all the payments of a client")
-    println("3. Get a ranking of the Salesman of a branch, on average rating")
+    println("3. Get the average rankings of the employees of a branch")
     println("4. Make a discount on all the product for sale of a brand (not already sold) ")
     println("5. Rank the branches by the amount they received over a period of time")
     println("6. List all the available product for rent that have a given condition")
@@ -47,9 +48,9 @@ object DbConnection extends App{
     try{
       var choice = askInteger(1,7,"Input your choice : ")
       choice match {
-        case 1 =>
-        case 2 =>
-        case 3 =>
+        case 1 => DbConnection2.createPayment(connection)
+        case 2 => DbConnection2.getPaymentsofClient(connection)
+        case 3 => DbConnection2.getAverageRankingOfEmployees(connection)
         case 4 => makeBrandDiscount(connection)
         case 5 => orderBranchesByPaymentOverPeriod(connection)
         case 6 => getAllRentalProductOfCondition(connection)
