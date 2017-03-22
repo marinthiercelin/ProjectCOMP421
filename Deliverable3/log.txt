@@ -1,0 +1,154 @@
+/usr/lib/jvm/java-1.8.0-openjdk-amd64/bin/java -Didea.launcher.port=7532 -Didea.launcher.bin.path=/home/marin/.local/share/umake/ide/idea/bin -Dfile.encoding=UTF-8 -classpath /usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/lib/charsets.jar:/usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/lib/ext/cldrdata.jar:/usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/lib/ext/dnsns.jar:/usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/lib/ext/icedtea-sound.jar:/usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/lib/ext/jaccess.jar:/usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/lib/ext/localedata.jar:/usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/lib/ext/nashorn.jar:/usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/lib/ext/sunec.jar:/usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/lib/ext/sunjce_provider.jar:/usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/lib/ext/sunpkcs11.jar:/usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/lib/ext/zipfs.jar:/usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/lib/jce.jar:/usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/lib/jsse.jar:/usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/lib/management-agent.jar:/usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/lib/resources.jar:/usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/lib/rt.jar:/home/marin/comp421/ProjectCOMP421/Deliverable3/Comp421Application/out/production/Comp421Application:/home/marin/comp421/postgresql-42.0.0.jre6.jar:/home/marin/.ivy2/cache/org.scala-lang/scala-reflect/jars/scala-reflect-2.12.1.jar:/home/marin/.ivy2/cache/org.scala-lang/scala-library/jars/scala-library-2.12.1.jar:/home/marin/.local/share/umake/ide/idea/lib/idea_rt.jar com.intellij.rt.execution.application.AppMain DbConnection
+
+Choose an Option : 
+1. Create a new Payment 
+2. See all the payments of a client
+3. Get the average rankings of the employees of a branch
+4. Make a discount on all the product for sale of a brand (not already sold) 
+5. Rank the branches by the amount they received over a period of time
+6. List all the available product for rent that have a given condition
+7. quit 
+Input your choice : 
+4
+
+This section allow you to create a discount
+ over all the products for sale of a specific brand
+Enter the name of the brand : Rossignol
+Input a discount percentage : 
+20
+
+Updated : 49
+
+Product : 3 Price before : 9 after : 7
+Product : 9 Price before : 65 after : 52
+Product : 14 Price before : 14 after : 11
+Product : 15 Price before : 15 after : 12
+Product : 18 Price before : 24 after : 19
+Product : 23 Price before : 58 after : 46
+Product : 26 Price before : 64 after : 51
+Product : 28 Price before : 12 after : 10
+Product : 29 Price before : 21 after : 17
+Product : 44 Price before : 11 after : 9
+Product : 47 Price before : 10 after : 8
+Product : 50 Price before : 12 after : 10
+Product : 52 Price before : 17 after : 14
+Product : 56 Price before : 21 after : 17
+Product : 57 Price before : 53 after : 42
+Product : 61 Price before : 22 after : 18
+Product : 62 Price before : 14 after : 11
+Product : 63 Price before : 8 after : 6
+Product : 75 Price before : 25 after : 20
+Product : 77 Price before : 29 after : 23
+Product : 83 Price before : 19 after : 15
+Product : 88 Price before : 5 after : 4
+Product : 96 Price before : 5 after : 4
+Product : 97 Price before : 56 after : 45
+Product : 108 Price before : 64 after : 51
+Product : 109 Price before : 20 after : 16
+Product : 118 Price before : 26 after : 21
+Product : 123 Price before : 20 after : 16
+Product : 124 Price before : 25 after : 20
+Product : 127 Price before : 11 after : 9
+Product : 131 Price before : 58 after : 46
+Product : 132 Price before : 26 after : 21
+Product : 133 Price before : 62 after : 50
+Product : 148 Price before : 8 after : 6
+Product : 149 Price before : 63 after : 50
+Product : 156 Price before : 28 after : 22
+Product : 157 Price before : 62 after : 50
+Product : 164 Price before : 7 after : 6
+Product : 168 Price before : 8 after : 6
+Product : 173 Price before : 17 after : 14
+Product : 176 Price before : 29 after : 23
+Product : 178 Price before : 14 after : 11
+Product : 179 Price before : 61 after : 49
+Product : 181 Price before : 28 after : 22
+Product : 186 Price before : 53 after : 42
+Product : 189 Price before : 58 after : 46
+Product : 190 Price before : 58 after : 46
+Product : 193 Price before : 61 after : 49
+Product : 197 Price before : 22 after : 18
+
+Choose an Option : 
+1. Create a new Payment 
+2. See all the payments of a client
+3. Get the average rankings of the employees of a branch
+4. Make a discount on all the product for sale of a brand (not already sold) 
+5. Rank the branches by the amount they received over a period of time
+6. List all the available product for rent that have a given condition
+7. quit 
+Input your choice : 
+5
+
+This section returns a ranking of all branches based on their revenue over a period 
+
+Give the period : 
+Enter the start date : 
+Give a day (DD) : 
+22
+Give a month (MM) : 
+03
+Give a year (YYYY) : 
+2014
+Enter the end date :
+Give a day (DD) : 
+22
+Give a month (MM) : 
+03
+Give a year (YYYY) : 
+2017
+
+Ranking : 
+1 : Branch 8 with 2358$ over that period 
+2 : Branch 7 with 2178$ over that period 
+3 : Branch 1 with 1867$ over that period 
+4 : Branch 4 with 1156$ over that period 
+5 : Branch 2 with 680$ over that period 
+6 : Branch 3 with 578$ over that period 
+7 : Branch 6 with 494$ over that period 
+8 : Branch 10 with 456$ over that period 
+9 : Branch 9 with 55$ over that period 
+
+Choose an Option : 
+1. Create a new Payment 
+2. See all the payments of a client
+3. Get the average rankings of the employees of a branch
+4. Make a discount on all the product for sale of a brand (not already sold) 
+5. Rank the branches by the amount they received over a period of time
+6. List all the available product for rent that have a given condition
+7. quit 
+Input your choice : 
+6
+
+This section displays all the rental equipment of a certain condition in a given branch
+
+Input the branch id : 
+2
+Different conditions : 
+1. Good
+2. Medium
+3. Bad
+Input your choice : 
+3
+Product : 223 Brand :Burton Name : null Condition : Bad Branch : 2
+Product : 225 Brand :Rossignol Name : null Condition : Bad Branch : 2
+Product : 230 Brand :Burton Name : null Condition : Bad Branch : 2
+Product : 234 Brand :Salomon Name : null Condition : Bad Branch : 2
+Product : 235 Brand :Rossignol Name : null Condition : Bad Branch : 2
+Product : 236 Brand :Nordica Name : null Condition : Bad Branch : 2
+Product : 238 Brand :Salomon Name : null Condition : Bad Branch : 2
+Product : 239 Brand :Rossignol Name : null Condition : Bad Branch : 2
+
+Choose an Option : 
+1. Create a new Payment 
+2. See all the payments of a client
+3. Get the average rankings of the employees of a branch
+4. Make a discount on all the product for sale of a brand (not already sold) 
+5. Rank the branches by the amount they received over a period of time
+6. List all the available product for rent that have a given condition
+7. quit 
+Input your choice : 
+7
+Good Bye !
+
+Process finished with exit code 0
